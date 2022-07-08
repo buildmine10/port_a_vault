@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "port_a_vault",
+  "version": "${version}",
+  "name": "Port_a_vault",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/port_a_vault/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "port_a_vault.port_a_vault.client.Port_a_vaultClient"
+    ],
+    "main": [
+      "port_a_vault.port_a_vault.Port_a_vault"
+    ]
+  },
+  "mixins": [
+    "port_a_vault.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.8",
+    "fabric": "*",
+    "minecraft": "1.19"
+  }
+}
