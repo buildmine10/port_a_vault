@@ -81,19 +81,19 @@ public class CustomChestBlockEntity extends LootableContainerBlockEntity {
 
 
     public boolean isEmpty() {
-        this.checkLootInteraction((PlayerEntity)null);
+        this.checkLootInteraction(null);
         return this.getItems().stream().allMatch((item)->{return item.isDeleted() || item.getData().isEmpty();});
     }
 
     public ItemStack getStack(int slot) {
-        this.checkLootInteraction((PlayerEntity)null);
-        return (ItemStack)this.getItems().get(slot).getData();
+        this.checkLootInteraction(null);
+        return this.getItems().get(slot).getData();
     }
 
     public ItemStack removeStack(int slot, int amount) {
-        this.checkLootInteraction((PlayerEntity)null);
+        this.checkLootInteraction(null);
         //the next line might be the source of a bug. This is Inventories.splitStack() remade for my wrapper class
-        ItemStack itemStack = slot >= 0 && slot < getItems().size() && !(getItems().get(slot).isDeleted() || ((ItemStack)getItems().get(slot).getData()).isEmpty()) && amount > 0 ? ((ItemStack)getItems().get(slot).getData()).split(amount) : ItemStack.EMPTY;
+        ItemStack itemStack = slot >= 0 && slot < getItems().size() && !(getItems().get(slot).isDeleted() || (getItems().get(slot).getData()).isEmpty()) && amount > 0 ? (getItems().get(slot).getData()).split(amount) : ItemStack.EMPTY;
         if (!itemStack.isEmpty()) {
             this.markDirty();
         }
@@ -103,13 +103,13 @@ public class CustomChestBlockEntity extends LootableContainerBlockEntity {
 
 
     public ItemStack removeStack(int slot) {
-        this.checkLootInteraction((PlayerEntity)null);
+        this.checkLootInteraction(null);
         //the next line might be the source of a bug. This is Inventories.removeStack() remade for my wrapper class
-        return slot >= 0 && slot < getItems().size() ? (ItemStack)getItems().get(slot).setData(ItemStack.EMPTY) : ItemStack.EMPTY;
+        return slot >= 0 && slot < getItems().size() ? getItems().get(slot).setData(ItemStack.EMPTY) : ItemStack.EMPTY;
     }
 
     public void setStack(int slot, ItemStack stack) {
-        this.checkLootInteraction((PlayerEntity)null);
+        this.checkLootInteraction(null);
         this.getItems().get(slot).setData(stack);
         if (stack.getCount() > this.getMaxCountPerStack()) {
             stack.setCount(this.getMaxCountPerStack());
