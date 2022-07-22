@@ -27,7 +27,7 @@ public class CustomChestBlockEntity extends LootableContainerBlockEntity {
     String pos;
 
     private DefaultedList<LinkedVariable<ItemStack>> getItems(){
-        return NetworkGlobals.getChest(pos);
+        return Port_a_vault.network.getChest(pos);
     }
     protected CustomChestBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -76,7 +76,7 @@ public class CustomChestBlockEntity extends LootableContainerBlockEntity {
 
     @Override
     public int size() {
-        return 3 * 9;
+        return NetworkGlobals.rows * 9;
     }
 
 
@@ -96,6 +96,7 @@ public class CustomChestBlockEntity extends LootableContainerBlockEntity {
         ItemStack itemStack = slot >= 0 && slot < getItems().size() && !(getItems().get(slot).isDeleted() || (getItems().get(slot).getData()).isEmpty()) && amount > 0 ? (getItems().get(slot).getData()).split(amount) : ItemStack.EMPTY;
         if (!itemStack.isEmpty()) {
             this.markDirty();
+            Port_a_vault.network.markDirty();
         }
 
         return itemStack;
@@ -105,6 +106,7 @@ public class CustomChestBlockEntity extends LootableContainerBlockEntity {
     public ItemStack removeStack(int slot) {
         this.checkLootInteraction(null);
         //the next line might be the source of a bug. This is Inventories.removeStack() remade for my wrapper class
+        Port_a_vault.network.markDirty();
         return slot >= 0 && slot < getItems().size() ? getItems().get(slot).setData(ItemStack.EMPTY) : ItemStack.EMPTY;
     }
 
@@ -116,10 +118,12 @@ public class CustomChestBlockEntity extends LootableContainerBlockEntity {
         }
 
         this.markDirty();
+        Port_a_vault.network.markDirty();
     }
 
     public void clear() {
         this.getItems().forEach(LinkedVariable::delete);
         this.getItems().clear();
+        Port_a_vault.network.markDirty();
     }
 }

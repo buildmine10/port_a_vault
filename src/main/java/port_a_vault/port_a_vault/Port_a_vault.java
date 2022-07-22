@@ -2,6 +2,7 @@ package port_a_vault.port_a_vault;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
@@ -17,6 +18,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
 import port_a_vault.port_a_vault.block.CustomChest;
 import port_a_vault.port_a_vault.block.CustomChestBlockEntity;
 import port_a_vault.port_a_vault.block.CustomChestScreenHandler;
@@ -41,6 +43,8 @@ public class Port_a_vault implements ModInitializer {
     public static final ScreenHandlerType<CustomChestScreenHandler> CUSTOM_CHEST_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier("port_a_vault", "custom_chest"), CustomChestScreenHandler::new);
 
 
+    public static NetworkGlobals network;
+
     @Override
     public void onInitialize() {
         Registry.register(Registry.BLOCK, new Identifier("port_a_vault", "custom_chest"), CUSTOM_CHEST_BLOCK);
@@ -48,5 +52,9 @@ public class Port_a_vault implements ModInitializer {
         Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier("port_a_vault", "custom_chest"), CUSTOM_CHEST_ENTITY);
         //Registry.register(Registry.SCREEN_HANDLER, new Identifier("port_a_vault", "custom_chest"), CUSTOM_CHEST_SCREEN_HANDLER);
         ScreenRegistry.register(CUSTOM_CHEST_SCREEN_HANDLER, GenericContainerScreen::new);
+        ServerLifecycleEvents.SERVER_STARTED.register(server->{
+            network = (NetworkGlobals) server.getWorld(World.OVERWORLD).getPersistentStateManager().getOrCreate(NetworkGlobals::readNbt, NetworkGlobals::new, "port_a_vault");
+        });
+
     }
 }

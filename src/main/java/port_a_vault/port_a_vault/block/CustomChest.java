@@ -21,8 +21,10 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import port_a_vault.port_a_vault.NetworkGlobals;
+import port_a_vault.port_a_vault.Port_a_vault;
 
 public class CustomChest extends BlockWithEntity {
+
 
     public CustomChest(Settings settings) {
         super(settings);
@@ -31,7 +33,7 @@ public class CustomChest extends BlockWithEntity {
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        NetworkGlobals.addChest(pos.toShortString());
+        Port_a_vault.network.addChest(pos.toShortString());
         return new CustomChestBlockEntity(pos, state);
     }
 
@@ -48,7 +50,7 @@ public class CustomChest extends BlockWithEntity {
             if (be instanceof Inventory) {
                 ItemScatterer.spawn(world, pos, (Inventory) be);
                 world.updateComparators(pos, this);
-                NetworkGlobals.removeChest(pos.toShortString());
+                Port_a_vault.network.removeChest(pos.toShortString());
             }
 
             super.onStateReplaced(state, world, pos, newState, moved);
@@ -66,10 +68,10 @@ public class CustomChest extends BlockWithEntity {
             NamedScreenHandlerFactory screenHandlerFactory = state.createScreenHandlerFactory(world, pos);
 
             if (screenHandlerFactory != null) {
-                System.out.println("succeeded to make screen handler factory");
+                //System.out.println("succeeded to make screen handler factory");
                 player.openHandledScreen(screenHandlerFactory);
             }else{
-                System.out.println("failed to make screen handler factory");
+                //System.out.println("failed to make screen handler factory");
             }
         }
 
