@@ -1,33 +1,24 @@
 package port_a_vault.port_a_vault.block;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.RedstoneBlock;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import port_a_vault.port_a_vault.NetworkGlobals;
 import port_a_vault.port_a_vault.Port_a_vault;
+import port_a_vault.port_a_vault.util.InventoryManager;
+import port_a_vault.port_a_vault.util.LinkedVariable;
 
 public class CustomChestBlockEntity extends LootableContainerBlockEntity {
 
     String pos;
 
     private DefaultedList<LinkedVariable<ItemStack>> getItems(){
-        return Port_a_vault.network.getChest(pos);
+        return Port_a_vault.inventoryManager.getChest(pos).inventory;
     }
     protected CustomChestBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -76,7 +67,7 @@ public class CustomChestBlockEntity extends LootableContainerBlockEntity {
 
     @Override
     public int size() {
-        return NetworkGlobals.rows * 9;
+        return InventoryManager.rowsPerChest * 9;
     }
 
 
@@ -96,7 +87,7 @@ public class CustomChestBlockEntity extends LootableContainerBlockEntity {
         ItemStack itemStack = slot >= 0 && slot < getItems().size() && !(getItems().get(slot).isDeleted() || (getItems().get(slot).getData()).isEmpty()) && amount > 0 ? (getItems().get(slot).getData()).split(amount) : ItemStack.EMPTY;
         if (!itemStack.isEmpty()) {
             this.markDirty();
-            Port_a_vault.network.markDirty();
+            Port_a_vault.inventoryManager.markDirty();
         }
 
         return itemStack;
@@ -106,7 +97,7 @@ public class CustomChestBlockEntity extends LootableContainerBlockEntity {
     public ItemStack removeStack(int slot) {
         this.checkLootInteraction(null);
         //the next line might be the source of a bug. This is Inventories.removeStack() remade for my wrapper class
-        Port_a_vault.network.markDirty();
+        Port_a_vault.inventoryManager.markDirty();
         return slot >= 0 && slot < getItems().size() ? getItems().get(slot).setData(ItemStack.EMPTY) : ItemStack.EMPTY;
     }
 
@@ -118,12 +109,12 @@ public class CustomChestBlockEntity extends LootableContainerBlockEntity {
         }
 
         this.markDirty();
-        Port_a_vault.network.markDirty();
+        Port_a_vault.inventoryManager.markDirty();
     }
 
     public void clear() {
         this.getItems().forEach(LinkedVariable::delete);
         this.getItems().clear();
-        Port_a_vault.network.markDirty();
+        Port_a_vault.inventoryManager.markDirty();
     }
 }

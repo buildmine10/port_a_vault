@@ -1,4 +1,4 @@
-package port_a_vault.port_a_vault.block;
+package port_a_vault.port_a_vault.util;
 
 public class LinkedVariable<T> {
     private T data;

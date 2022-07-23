@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 import port_a_vault.port_a_vault.block.CustomChest;
 import port_a_vault.port_a_vault.block.CustomChestBlockEntity;
 import port_a_vault.port_a_vault.block.CustomChestScreenHandler;
+import port_a_vault.port_a_vault.util.InventoryManager;
 
 
 /*
@@ -43,7 +44,8 @@ public class Port_a_vault implements ModInitializer {
     public static final ScreenHandlerType<CustomChestScreenHandler> CUSTOM_CHEST_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier("port_a_vault", "custom_chest"), CustomChestScreenHandler::new);
 
 
-    public static NetworkGlobals network;
+    //public static NetworkGlobals network;
+    public static InventoryManager inventoryManager;
 
     @Override
     public void onInitialize() {
@@ -53,7 +55,8 @@ public class Port_a_vault implements ModInitializer {
         //Registry.register(Registry.SCREEN_HANDLER, new Identifier("port_a_vault", "custom_chest"), CUSTOM_CHEST_SCREEN_HANDLER);
         ScreenRegistry.register(CUSTOM_CHEST_SCREEN_HANDLER, GenericContainerScreen::new);
         ServerLifecycleEvents.SERVER_STARTED.register(server->{
-            network = (NetworkGlobals) server.getWorld(World.OVERWORLD).getPersistentStateManager().getOrCreate(NetworkGlobals::readNbt, NetworkGlobals::new, "port_a_vault");
+            //network = (NetworkGlobals) server.getWorld(World.OVERWORLD).getPersistentStateManager().getOrCreate(NetworkGlobals::readNbt, NetworkGlobals::new, "port_a_vault");
+            inventoryManager = (InventoryManager) server.getWorld(World.OVERWORLD).getPersistentStateManager().getOrCreate(InventoryManager::readNbt, InventoryManager::new, "port_a_vault");
         });
 
     }
