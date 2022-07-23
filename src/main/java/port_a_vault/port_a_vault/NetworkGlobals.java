@@ -15,6 +15,8 @@ public class NetworkGlobals extends PersistentState {
     public static int rows = 3;
     public HashMap<String, DefaultedList<LinkedVariable<ItemStack>>> chests = new HashMap<>();
 
+    boolean isUsingRedBlackTree = true;
+
     public static boolean areAllChestsLinked = false;
 
     public void addChest(String pos){
