@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 
 public class RedBlackTree<T> {
 
-    private class Node {
+    public class Node {
         LinkedVariable<T> data;
 
         Node left;
@@ -428,9 +428,14 @@ public class RedBlackTree<T> {
 
 
     public boolean validate(){
-        int result = validate(root, 1);
-        removedMarked();
-        return result != 0 && !root.isRed;
+        if(root != null){
+            int result = validate(root, 1);
+            removedMarked();
+            boolean isBST = bstCheck(root);
+            return result != 0 && !root.isRed && isBST;
+        }else{
+            return true;
+        }
     }
 
     private int validate(Node node, int blackCount){
@@ -470,6 +475,30 @@ public class RedBlackTree<T> {
         }
     }
 
+    private boolean bstCheck(Node node){
+        boolean isLeftValid = true;
+        if(node.left != null){
+            if(comparator.compare(node.left.data.getData(), node.data.getData()) <= 0){
+                isLeftValid = bstCheck(node.left);
+            }else{
+                //System.out.println(node.right.data.getData());
+                isLeftValid = false;
+            }
+        }
+
+        boolean isRightValid = true;
+        if(node.right != null){
+            if(comparator.compare(node.right.data.getData(), node.data.getData()) < 0){
+                //System.out.println(node.right.data.getData());
+                isRightValid = false;
+            }else{
+                isRightValid = bstCheck(node.right);
+            }
+        }
+
+        return isLeftValid && isRightValid;
+    }
+
 
     private void removedMarked(){
         if(!areMarkedBeingRemoved){
@@ -500,25 +529,29 @@ public class RedBlackTree<T> {
     }
 
     public void preOrder(Consumer<Node> func){
-        preOrder(func, root);
+        if(root != null)
+            preOrder(func, root);
         removedMarked();
     }
 
     public void inOrder(Consumer<Node> func){
-        inOrder(func, root);
+        if(root != null)
+            inOrder(func, root);
         removedMarked();
     }
 
     public void postOrder(Consumer<Node> func){
-        postOrder(func, root);
+        if(root != null)
+            postOrder(func, root);
         removedMarked();
     }
 
-    private void preOrder(Consumer<Node> func, Node node){
+    public void preOrder(Consumer<Node> func, Node node){
         if(node.data.isDeleted()){
             markedForRemoval.add(node);
         }else{
-            func.accept(node);
+            if(node != null)
+                func.accept(node);
         }
         if(node.left != null){
             preOrder(func, node.left);
@@ -528,31 +561,33 @@ public class RedBlackTree<T> {
         }
     }
 
-    private void inOrder(Consumer<Node> func, Node node){
+    public void inOrder(Consumer<Node> func, Node node){
         if(node.left != null){
-            preOrder(func, node.left);
+            inOrder(func, node.left);
         }
         if(node.data.isDeleted()){
             markedForRemoval.add(node);
         }else{
-            func.accept(node);
+            if(node != null)
+                func.accept(node);
         }
         if(node.right != null){
-            preOrder(func, node.right);
+            inOrder(func, node.right);
         }
     }
 
-    private void postOrder(Consumer<Node> func, Node node){
+    public void postOrder(Consumer<Node> func, Node node){
         if(node.left != null){
-            preOrder(func, node.left);
+            postOrder(func, node.left);
         }
         if(node.right != null){
-            preOrder(func, node.right);
+            postOrder(func, node.right);
         }
         if(node.data.isDeleted()){
             markedForRemoval.add(node);
         }else{
-            func.accept(node);
+            if(node != null)
+                func.accept(node);
         }
     }
 

@@ -67,6 +67,8 @@ public class InventoryManager extends PersistentState {
 
 
 
+
+    public AccessPointBackend backend = new AccessPointBackend();
     public static final int rowsPerChest = 3;
     private HashMap<String, Chest> chests = new HashMap<>();//chest coordinates to chest data
     private HashMap<String, HashSet<Chest>> chestChannels = new HashMap<>();
@@ -78,16 +80,18 @@ public class InventoryManager extends PersistentState {
 
     public void addChest(String pos){
         Chest chest = new Chest(pos);
-        chests.putIfAbsent(pos, chest);
-        chestChannels.putIfAbsent(chest.channel, new HashSet<>());
-        chestChannels.get(chest.channel).add(chest);
+        if(chests.putIfAbsent(pos, chest) == null){//if it needed to be created
+            chestChannels.putIfAbsent(chest.channel, new HashSet<>());
+            chestChannels.get(chest.channel).add(chest);
+        }
+
         markDirty();
     }
 
     public void removeChest(String pos){
         //System.out.println("removed chest");
         chestChannels.getOrDefault(chests.get(pos).channel, new HashSet<>()).remove(chests.get(pos));
-        if(chestChannels.get(chests.get(pos).channel).isEmpty()){
+        if(chestChannels.getOrDefault(chests.get(pos).channel, new HashSet<>()).isEmpty()){
             chestChannels.remove(chests.get(pos).channel);
         }
         chests.get(pos).delete();
