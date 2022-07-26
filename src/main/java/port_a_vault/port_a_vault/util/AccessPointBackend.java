@@ -29,6 +29,11 @@ import java.util.Objects;
 //removeStack removes a full stack
 //removeCount removes up to a full stack
 
+//the Chest class has a function that searches for the channels of the surrounding positions.
+//  This assigns the channel of the chest when the chest is placed
+
+//running generateTrees will refresh the access point
+
 public class AccessPointBackend {
 
     public void forTest(World world, BlockPos pos, PlayerEntity player, Hand hand){
@@ -69,9 +74,6 @@ public class AccessPointBackend {
     HashMap<String, BTree> bTrees = new HashMap<>();
 
 
-    private void makeRedBlackTree(String name){
-        redBlackTrees.putIfAbsent(name, new RedBlackTree2());
-    }
     public void generateTrees(){
         if(isUsingRedBlackTree){
             generateRedBlackTrees();
@@ -84,8 +86,7 @@ public class AccessPointBackend {
 
     private void generateRedBlackTrees(){
         InventoryManager inventoryManager = Port_a_vault.inventoryManager;
-        makeRedBlackTree("");
-        redBlackTrees.get("").root = null;//this make the tree new (the garbage collector will delete the now inaccessible tree pieces)
+        redBlackTrees.put("", new RedBlackTree2());
 
         HashSet<Chest> chests = inventoryManager.getChestsOnChannel(channel);//gets the chests on the same channel as the access point
         for(Chest chest : chests){
@@ -94,12 +95,7 @@ public class AccessPointBackend {
             }
         }
 
-        //this is testing code (it can be safely removed)
-        //var hi = search("Bl", "");
-        //int i = 0;
-        //for(LinkedVariable<ItemStack> h : hi){
-        //    System.out.println(i++ + " " + h.getData().getName().getString());
-        //}
+
     }
 
     private void generateBTrees(){
@@ -176,6 +172,9 @@ public class AccessPointBackend {
     private ArrayList<LinkedVariable<ItemStack>> searchRedBlack(String name, RedBlackTree2 tree){
 
         var minTarget = tree.root;
+        if(tree.root == null){
+            return new ArrayList<>();
+        }
 
         if(name.compareTo("") != 0){
             RedBlackTree2.Node possibleTarget = null;
@@ -276,6 +275,8 @@ public class AccessPointBackend {
         return out;
     }
 
+    //generates a list of big stacks
+    //this is what the access point displays
     public ArrayList<BigStack> toBigStacks(ArrayList<LinkedVariable<ItemStack>> stacks){
         ArrayList<BigStack> out = new ArrayList<>();
         ArrayList<LinkedVariable<ItemStack>> buffer = new ArrayList<>();
@@ -310,29 +311,7 @@ public class AccessPointBackend {
         return out;
     }
 
-    public void insertStack(ArrayList<BigStack> bigStacks, ItemStack stack){
-        boolean isSuccess = false;
-
-        for(BigStack bigStack : bigStacks){
-            if(bigStack.name.compareTo(stack.getName().getString()) == 0){//if the big stack is the same as the
-                if(bigStack.insertStack(stack) == 0){//if it added the entire stack
-                    isSuccess = true;
-                }
-            }
-        }
-
-        if(!isSuccess){
-            ArrayList<BigStack> possibleAirStacks = toBigStacks(search("Air", ""));
-            BigStack airStack = null;
-            for(BigStack bigStack : possibleAirStacks){
-                if(bigStack.name.compareTo("Air") == 0){//if the big stack is the same as the
-                    bigStack.insertStack(stack);
-                }
-            }
-        }
-
-    }
-
+    //insert the stack into the network
     public void insertStack(ItemStack stack){
         boolean isSuccess = false;
 
@@ -358,10 +337,12 @@ public class AccessPointBackend {
 
     }
 
+    //removes a full stack from the big stack that is passed in
     public ItemStack removeStack(BigStack stack){
         return stack.removeStack();
     }
 
+    //Removes the specified amount the from big stack that is passed in
     public ItemStack removeCount(BigStack stack, int count){
         return stack.removeCount(1);
     }

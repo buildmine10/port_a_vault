@@ -244,5 +244,15 @@ public class BigStack {
 
     }
 
+    public Item getItem(){
+        while(!itemStacks.sorted.isEmpty()){
+            var stack = itemStacks.pop();
+            if(!stack.isDeleted()){
+                return stack.getData().getItem();
+            }
+        }
+        return null;
+    }
+
 
 }
