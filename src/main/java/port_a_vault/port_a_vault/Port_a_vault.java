@@ -10,7 +10,6 @@ import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.gui.screen.ingame.Generic3x3ContainerScreen;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -19,10 +18,7 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import port_a_vault.port_a_vault.block.CustomChest;
-import port_a_vault.port_a_vault.block.CustomChestBlockEntity;
-import port_a_vault.port_a_vault.block.CustomChestScreenHandler;
-import port_a_vault.port_a_vault.block.Test;
+import port_a_vault.port_a_vault.block.*;
 import port_a_vault.port_a_vault.util.InventoryManager;
 
 
@@ -48,6 +44,9 @@ public class Port_a_vault implements ModInitializer {
     public static final Block TEST_BLOCK = new Test(FabricBlockSettings.of(Material.METAL));
     public static final Item TEST_ITEM = new BlockItem(TEST_BLOCK, new FabricItemSettings().group(ItemGroup.MISC));
 
+    public static final Block TEST2_BLOCK = new Test2(FabricBlockSettings.of(Material.METAL));
+    public static final Item TEST2_ITEM = new BlockItem(TEST2_BLOCK, new FabricItemSettings().group(ItemGroup.MISC));
+
 
     //public static NetworkGlobals network;
     public static InventoryManager inventoryManager;
@@ -66,5 +65,8 @@ public class Port_a_vault implements ModInitializer {
 
         Registry.register(Registry.BLOCK, new Identifier("port_a_vault", "test"), TEST_BLOCK);
         Registry.register(Registry.ITEM, new Identifier("port_a_vault", "test"), TEST_ITEM);
+
+        Registry.register(Registry.BLOCK, new Identifier("port_a_vault", "test2"), TEST2_BLOCK);
+        Registry.register(Registry.ITEM, new Identifier("port_a_vault", "test2"), TEST2_ITEM);
     }
 }

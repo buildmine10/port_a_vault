@@ -7,10 +7,9 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.PersistentState;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Objects;
+
 
 public class InventoryManager extends PersistentState {
 
@@ -124,5 +123,6 @@ public class InventoryManager extends PersistentState {
     public HashSet<Chest> getChestsOnChannel(String channel){
         return chestChannels.getOrDefault(channel, new HashSet<>());
     }
+
 
 }
