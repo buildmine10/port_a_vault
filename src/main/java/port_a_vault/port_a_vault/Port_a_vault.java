@@ -19,9 +19,8 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import port_a_vault.port_a_vault.block.CustomChest;
-import port_a_vault.port_a_vault.block.CustomChestBlockEntity;
-import port_a_vault.port_a_vault.block.CustomChestScreenHandler;
+import port_a_vault.port_a_vault.block.*;
+import port_a_vault.port_a_vault.items.Terminal;
 import port_a_vault.port_a_vault.block.Test;
 import port_a_vault.port_a_vault.util.InventoryManager;
 
@@ -44,6 +43,13 @@ public class Port_a_vault implements ModInitializer {
     public static final BlockEntityType<CustomChestBlockEntity> CUSTOM_CHEST_ENTITY = FabricBlockEntityTypeBuilder.create(CustomChestBlockEntity::new, CUSTOM_CHEST_BLOCK).build(null);
     public static final ScreenHandlerType<CustomChestScreenHandler> CUSTOM_CHEST_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier("port_a_vault", "custom_chest"), CustomChestScreenHandler::new);
 
+    public static final Block HUB_BLOCK = new Hub(FabricBlockSettings.of(Material.METAL));
+
+    public static final Item HUB_ITEM = new BlockItem(HUB_BLOCK, new FabricItemSettings().group(ItemGroup.MISC));
+
+    public static final BlockEntityType<HubBlockEntity> HUB_BLOCK_ENTITY = FabricBlockEntityTypeBuilder.create(HubBlockEntity::new, HUB_BLOCK).build(null);
+
+    public static Item TERMINAL_ITEM = new Terminal(new Item.Settings().group(ItemGroup.MISC));
 
     public static final Block TEST_BLOCK = new Test(FabricBlockSettings.of(Material.METAL));
     public static final Item TEST_ITEM = new BlockItem(TEST_BLOCK, new FabricItemSettings().group(ItemGroup.MISC));
@@ -58,6 +64,8 @@ public class Port_a_vault implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier("port_a_vault", "custom_chest"), CUSTOM_CHEST_ITEM);
         Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier("port_a_vault", "custom_chest"), CUSTOM_CHEST_ENTITY);
         //Registry.register(Registry.SCREEN_HANDLER, new Identifier("port_a_vault", "custom_chest"), CUSTOM_CHEST_SCREEN_HANDLER);
+        Registry.register(Registry.ITEM, new Identifier("port_a_vault", "terminal"), TERMINAL_ITEM);
+        Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier("port_a_vault", "hub"), HUB_BLOCK_ENTITY);
         ScreenRegistry.register(CUSTOM_CHEST_SCREEN_HANDLER, GenericContainerScreen::new);
         ServerLifecycleEvents.SERVER_STARTED.register(server->{
             //network = (NetworkGlobals) server.getWorld(World.OVERWORLD).getPersistentStateManager().getOrCreate(NetworkGlobals::readNbt, NetworkGlobals::new, "port_a_vault");
