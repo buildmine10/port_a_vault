@@ -64,9 +64,14 @@ public class Port_a_vault implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier("port_a_vault", "custom_chest"), CUSTOM_CHEST_ITEM);
         Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier("port_a_vault", "custom_chest"), CUSTOM_CHEST_ENTITY);
         //Registry.register(Registry.SCREEN_HANDLER, new Identifier("port_a_vault", "custom_chest"), CUSTOM_CHEST_SCREEN_HANDLER);
-        Registry.register(Registry.ITEM, new Identifier("port_a_vault", "terminal"), TERMINAL_ITEM);
-        Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier("port_a_vault", "hub"), HUB_BLOCK_ENTITY);
         ScreenRegistry.register(CUSTOM_CHEST_SCREEN_HANDLER, GenericContainerScreen::new);
+
+        Registry.register(Registry.ITEM, new Identifier("port_a_vault", "terminal"), TERMINAL_ITEM);
+        Registry.register(Registry.BLOCK, new Identifier("port_a_vault", "hub"), HUB_BLOCK);
+        Registry.register(Registry.ITEM, new Identifier("port_a_vault", "hub"), HUB_ITEM);
+        Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier("port_a_vault", "hub"), HUB_BLOCK_ENTITY);
+
+
         ServerLifecycleEvents.SERVER_STARTED.register(server->{
             //network = (NetworkGlobals) server.getWorld(World.OVERWORLD).getPersistentStateManager().getOrCreate(NetworkGlobals::readNbt, NetworkGlobals::new, "port_a_vault");
             inventoryManager = (InventoryManager) server.getWorld(World.OVERWORLD).getPersistentStateManager().getOrCreate(InventoryManager::readNbt, InventoryManager::new, "port_a_vault");

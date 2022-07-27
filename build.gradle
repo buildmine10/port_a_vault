@@ -22,7 +22,7 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation "io.github.cottonmc:LibGui:6.0.0+1.19"
+    modImplementation include("io.github.cottonmc:LibGui:6.0.0+1.19")
 }
 
 processResources {
@@ -63,6 +63,8 @@ jar {
         rename { "${it}_${project.archivesBaseName}" }
     }
 }
+
+
 
 // configure the maven publication
 publishing {
