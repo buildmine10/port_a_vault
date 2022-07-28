@@ -23,9 +23,11 @@ import org.jetbrains.annotations.Nullable;
 import port_a_vault.port_a_vault.Port_a_vault;
 import port_a_vault.port_a_vault.gui.HubGuiDescription;
 import port_a_vault.port_a_vault.util.AccessPointBackend;
+import port_a_vault.port_a_vault.util.LinkedVariable;
 
 public class HubBlockEntity extends LootableContainerBlockEntity implements NamedScreenHandlerFactory {
 
+    String pos;
     AccessPointBackend backend = new AccessPointBackend();
     String channel = "";
     int scrollAmount = 0;
@@ -89,10 +91,20 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
         return displayStacks.get(slot);
     }
 
-    @Override
+    private DefaultedList<LinkedVariable<ItemStack>> getItems(){
+        return Port_a_vault.inventoryManager.getChest(pos).inventory;
+    }
+
+
     public void setStack(int slot, ItemStack stack) {
         this.checkLootInteraction(null);
+        this.getItems().get(slot).setData(stack);
+        if (stack.getCount() > this.getMaxCountPerStack()) {
+            stack.setCount(this.getMaxCountPerStack());
+        }
 
+        this.markDirty();
+        Port_a_vault.inventoryManager.markDirty();
     }
 
     @Override
@@ -114,10 +126,10 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
     protected void setInvStackList(DefaultedList<ItemStack> list) {}
 
     public void scroll(int amount){
-        scrollAmount += amount;
+        scrollAmount = HubGuiDescription.scrollBar.getValue();
     }
 
-    private void updateDisplayList(){
-
+    private void updateDisplayList(String name){
+        backend.toBigStacks(backend.search(name, ""));
     }
 }

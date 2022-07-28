@@ -14,6 +14,7 @@ import port_a_vault.port_a_vault.Port_a_vault;
 public class HubGuiDescription extends SyncedGuiDescription {
 
     private static final int INVENTORY_SIZE = 9*5;
+    public static WScrollBar scrollBar = new WScrollBar(Axis.VERTICAL);
 
     public HubGuiDescription(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
         super(Port_a_vault.HUB_SCREEN_HANDLER_TYPE , syncId, playerInventory, getBlockInventory(context, INVENTORY_SIZE), getBlockPropertyDelegate(context));
@@ -34,9 +35,13 @@ public class HubGuiDescription extends SyncedGuiDescription {
         }
 
         root.add(invenPanel, 0, 3);
+        root.add(scrollBar, 55, 3, 5, 30);
+
 
 
         root.add(this.createPlayerInventoryPanel(), 0, 6*5+4);
+
+
 
         root.validate(this);
     }
