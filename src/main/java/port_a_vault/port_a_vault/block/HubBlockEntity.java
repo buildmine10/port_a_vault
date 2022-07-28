@@ -39,7 +39,7 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
 
     @Override
     public Text getDisplayName() {
-        return Text.literal("name");
+        return Text.literal("name 2");
     }
 
     @Override
