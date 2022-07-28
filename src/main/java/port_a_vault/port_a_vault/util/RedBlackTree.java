@@ -5,6 +5,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
+
+//this red black tree had edge case bugs, that did not show up in initial testing
+//It was replaced by a more specifically defined red black tree that omitted the ability to delete
+//  Deletion was not needed, and it was causing the bug, so it was removed.
+//  We did not have time to find the bug
 public class RedBlackTree<T> {
 
     public class Node {
@@ -60,8 +65,8 @@ public class RedBlackTree<T> {
             Node grandChild = node.right.left;
             node.right.left = node;
             node.right = grandChild;
-            if(node.right != null){
-                node.right.parent = node;
+            if(grandChild != null){
+                grandChild.parent = node;
             }
         }
     }
@@ -86,8 +91,8 @@ public class RedBlackTree<T> {
             Node grandChild = node.left.right;
             node.left.right = node;
             node.left = grandChild;
-            if(node.left != null){
-                node.left.parent = node;
+            if(grandChild != null){
+                grandChild.parent = node;
             }
         }
     }
@@ -177,6 +182,10 @@ public class RedBlackTree<T> {
     }
 
     public void remove(Node node){
+        //if(node.parent == null && root != node){//The node is invalidly defined and cannot be removed
+        //    return;
+        //}
+
         boolean hasLeftChild = node.left != null;
         boolean hasRightChild = node.right != null;
 
@@ -216,7 +225,7 @@ public class RedBlackTree<T> {
 
             child.isRed = node.isRed;
 
-            node.data = null;
+            //node.data = null;
             //fixDelete(child);
         }else{//it has two children
             if(node.left.right == null){
@@ -228,6 +237,7 @@ public class RedBlackTree<T> {
 
                 //remove(child);
 
+                //swaps node and child
                 child.parent = node.parent;
                 if(node.isLeftChild()){
                     child.parent.left = child;
@@ -235,6 +245,7 @@ public class RedBlackTree<T> {
                     child.parent.right = child;
                 }
                 node.parent = child;
+
 
                 child.right = node.right;
                 node.left = child.left;
@@ -246,6 +257,7 @@ public class RedBlackTree<T> {
 
                 child.right.parent = child;
 
+
                 //node.parent.left = null;
 
                 boolean nodeIsRed = node.isRed;
@@ -255,7 +267,7 @@ public class RedBlackTree<T> {
                 if(node == root){
                     root = child;
                 }
-
+                //done swapping
 
                 remove(node);
                 return;
@@ -271,6 +283,7 @@ public class RedBlackTree<T> {
                 //child.data = temp;
                 //remove(child);
 
+                //swaps node and child
                 Node childOldParent = child.parent;
                 child.parent = node.parent;
                 node.parent = childOldParent;
@@ -278,6 +291,7 @@ public class RedBlackTree<T> {
                 Node nodeOldLeft = node.left;
                 node.left = child.left;
                 child.left = nodeOldLeft;
+
 
                 child.right = node.right;
                 node.right = null;
@@ -302,13 +316,17 @@ public class RedBlackTree<T> {
         }
 
 
-        removedMarked();
+        //removedMarked();
 
     }
 
     // Balance the tree after deletion of a node
+    /*
     private void fixRemove(Node node) {
-        if(node.data.isDeleted()){
+        if(node == null){//there is nothing to fix
+            return;
+        }
+        if(node.data.isDeleted() && !areMarkedBeingRemoved){
             markedForRemoval.add(node);
         }
         if(node == root){
@@ -325,21 +343,23 @@ public class RedBlackTree<T> {
         }
 
         if(sibling == null || !sibling.isRed && (sibling.left == null || !sibling.left.isRed) && (sibling.right == null || !sibling.right.isRed)){
-            if(isLeftChild){
-                node.parent.left = null;
-            }else{
-                node.parent.right = null;
+            //if(isLeftChild){
+            //    node.parent.left = null;
+            //}else{
+            //    node.parent.right = null;
+            //}
+            //node.parent = null;
+            if(sibling != null){
+                sibling.isRed = true;
             }
-            node.parent = null;
 
-            sibling.isRed = true;
-
-            if(sibling.parent.isRed){
-                sibling.parent.isRed = false;
+            if(node.parent.isRed){
+                node.parent.isRed = false;
             }else{
-                fixRemove(sibling.parent);
+                fixRemove(node.parent);
                 return;
             }
+
         }else if(sibling != null && sibling.isRed){
             {
                 boolean temp = sibling.isRed;
@@ -382,7 +402,7 @@ public class RedBlackTree<T> {
                 leftRotate(node.parent);
                 farSiblingChild.isRed = false;
             }
-        }else{
+        }else{//if right child
             if(sibling.left == null || !sibling.left.isRed){
                 if(sibling.right != null && sibling.right.isRed){
                     sibling.isRed = true;
@@ -411,6 +431,72 @@ public class RedBlackTree<T> {
                 farSiblingChild.isRed = false;
             }
         }
+    }
+    */
+
+
+    private void fixRemove(Node node){
+        Node sibling;
+        while (node != root && !node.isRed) {
+            if (node == node.parent.left) {
+                sibling = node.parent.right;
+                if (sibling != null && sibling.isRed) {
+                    sibling.isRed = false;
+                    node.parent.isRed = true;
+                    leftRotate(node.parent);
+                    sibling = node.parent.right;
+                }
+
+                if(sibling == null){
+                    node = node.parent;
+                }else if ((sibling.left == null || !sibling.left.isRed) && (sibling.right == null || !sibling.right.isRed)) {
+                    sibling.isRed = true;
+                    node = node.parent;
+                } else {
+                    if (sibling.right == null || !sibling.right.isRed) {
+                        sibling.left.isRed = false;
+                        sibling.isRed = true;
+                        rightRotate(sibling);
+                        sibling = node.parent.right;
+                    }
+
+                    sibling.isRed = node.parent.isRed;
+                    node.parent.isRed = false;
+                    sibling.right.isRed = false;
+                    leftRotate(node.parent);
+                    node = root;
+                }
+            } else {
+                sibling = node.parent.left;
+                if (sibling != null && sibling.isRed) {
+                    sibling.isRed = false;
+                    node.parent.isRed = true;
+                    rightRotate(node.parent);
+                    sibling = node.parent.left;
+                }
+
+                if(sibling == null){
+                    node = node.parent;
+                }else if ((sibling.left == null || !sibling.left.isRed) && (sibling.right == null || !sibling.right.isRed)) {
+                    sibling.isRed = true;
+                    node = node.parent;
+                } else {
+                    if (sibling.left == null || !sibling.left.isRed) {
+                        sibling.right.isRed = false;
+                        sibling.isRed = true;
+                        leftRotate(sibling);
+                        sibling = node.parent.left;
+                    }
+
+                    sibling.isRed = node.parent.isRed;
+                    node.parent.isRed = false;
+                    sibling.left.isRed = false;
+                    rightRotate(node.parent);
+                    node = root;
+                }
+            }
+        }
+        node.isRed = false;
     }
 
     public void printPreOrder(){
@@ -503,8 +589,12 @@ public class RedBlackTree<T> {
     private void removedMarked(){
         if(!areMarkedBeingRemoved){
             areMarkedBeingRemoved = true;
+            int i = 0;
             for(var entry : markedForRemoval){
                 remove(entry);//I am moving data around the nodes, so you need to update marked for removal
+                //if(++i == markedForRemoval.size() - 1){
+                //    break;
+                //}
             }
             markedForRemoval.clear();
             areMarkedBeingRemoved = false;

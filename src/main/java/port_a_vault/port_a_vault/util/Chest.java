@@ -5,7 +5,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.collection.DefaultedList;
-import org.checkerframework.checker.units.qual.C;
 import port_a_vault.port_a_vault.Port_a_vault;
 
 public class Chest {

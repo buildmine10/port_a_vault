@@ -14,7 +14,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import port_a_vault.port_a_vault.Port_a_vault;
-import port_a_vault.port_a_vault.util.InventoryManager;
 
 public class CustomChest extends BlockWithEntity {
 
