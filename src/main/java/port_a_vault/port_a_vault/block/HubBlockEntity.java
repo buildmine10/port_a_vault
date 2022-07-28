@@ -26,7 +26,8 @@ import port_a_vault.port_a_vault.gui.HubGuiDescription;
 public class HubBlockEntity extends LootableContainerBlockEntity implements NamedScreenHandlerFactory {
 
     String pos;
-    ItemStack stack = ItemStack.EMPTY;
+
+    DefaultedList<ItemStack> displayStacks = DefaultedList.ofSize(9 * 5, ItemStack.EMPTY);
 
     protected HubBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -60,7 +61,7 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
 
     @Override
     public int size() {
-        return 1;
+        return 9 * 5;
     }
 
     @Override
@@ -72,25 +73,26 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
     @Override
     public ItemStack getStack(int slot) {
         this.checkLootInteraction(null);
-        return new ItemStack(Items.STONE);
+        return displayStacks.get(slot);
     }
 
     @Override
     public ItemStack removeStack(int slot, int amount) {
         this.checkLootInteraction(null);
-        return new ItemStack(Items.STONE);
+        return displayStacks.get(slot);
     }
 
     @Override
     public ItemStack removeStack(int slot) {
+        //System.out.println("hi");
         this.checkLootInteraction(null);
-        return new ItemStack(Items.STONE);
+        return displayStacks.get(slot);
     }
 
     @Override
     public void setStack(int slot, ItemStack stack) {
         this.checkLootInteraction(null);
-        this.stack = stack;
+
     }
 
     @Override
