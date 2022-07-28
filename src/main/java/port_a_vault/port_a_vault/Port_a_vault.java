@@ -15,11 +15,13 @@ import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import port_a_vault.port_a_vault.block.*;
+import port_a_vault.port_a_vault.gui.HubGuiDescription;
 import port_a_vault.port_a_vault.items.Terminal;
 import port_a_vault.port_a_vault.block.Test;
 import port_a_vault.port_a_vault.util.InventoryManager;
@@ -53,6 +55,9 @@ public class Port_a_vault implements ModInitializer {
 
     public static final Block TEST_BLOCK = new Test(FabricBlockSettings.of(Material.METAL));
     public static final Item TEST_ITEM = new BlockItem(TEST_BLOCK, new FabricItemSettings().group(ItemGroup.MISC));
+
+
+    public static final ScreenHandlerType<HubGuiDescription> HUB_SCREEN_HANDLER_TYPE = Registry.register(Registry.SCREEN_HANDLER, new Identifier("port_a_vault", "hub"), new ScreenHandlerType<>((syncId, inventory) -> new HubGuiDescription(syncId, inventory, ScreenHandlerContext.EMPTY)));
 
 
     //public static NetworkGlobals network;
