@@ -1,26 +1,18 @@
 package port_a_vault.port_a_vault.block;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import port_a_vault.port_a_vault.NetworkGlobals;
 import port_a_vault.port_a_vault.Port_a_vault;
 
 public class CustomChest extends BlockWithEntity {
@@ -33,7 +25,7 @@ public class CustomChest extends BlockWithEntity {
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        Port_a_vault.network.addChest(pos.toShortString());
+        Port_a_vault.inventoryManager.addChest(pos.toShortString());
         return new CustomChestBlockEntity(pos, state);
     }
 
@@ -50,7 +42,7 @@ public class CustomChest extends BlockWithEntity {
             if (be instanceof Inventory) {
                 ItemScatterer.spawn(world, pos, (Inventory) be);
                 world.updateComparators(pos, this);
-                Port_a_vault.network.removeChest(pos.toShortString());
+                Port_a_vault.inventoryManager.removeChest(pos.toShortString());
             }
 
             super.onStateReplaced(state, world, pos, newState, moved);
