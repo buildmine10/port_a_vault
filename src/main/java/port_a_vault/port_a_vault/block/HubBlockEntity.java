@@ -22,17 +22,17 @@ import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 import port_a_vault.port_a_vault.Port_a_vault;
 import port_a_vault.port_a_vault.gui.HubGuiDescription;
+import port_a_vault.port_a_vault.util.AccessPointBackend;
 
 public class HubBlockEntity extends LootableContainerBlockEntity implements NamedScreenHandlerFactory {
 
-    String pos;
-
+    AccessPointBackend backend = new AccessPointBackend();
+    String channel = "";
+    int scrollAmount = 0;
     DefaultedList<ItemStack> displayStacks = DefaultedList.ofSize(9 * 5, ItemStack.EMPTY);
 
     protected HubBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
-        pos = blockPos.toShortString();
-        //items = NetworkGlobals.getChest(blockPos);
     }
     public HubBlockEntity(BlockPos blockPos, BlockState blockState) {
         this(Port_a_vault.HUB_BLOCK_ENTITY, blockPos, blockState);
@@ -111,7 +111,13 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
     }
 
     @Override
-    protected void setInvStackList(DefaultedList<ItemStack> list) {
+    protected void setInvStackList(DefaultedList<ItemStack> list) {}
+
+    public void scroll(int amount){
+        scrollAmount += amount;
+    }
+
+    private void updateDisplayList(){
 
     }
 }

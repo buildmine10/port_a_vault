@@ -346,4 +346,8 @@ public class AccessPointBackend {
     public ItemStack removeCount(BigStack stack, int count){
         return stack.removeCount(1);
     }
+
+    public void setChannel(String channel){
+        this.channel = channel;
+    }
 }
