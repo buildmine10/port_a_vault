@@ -19,7 +19,7 @@ public class HubGuiDescription extends SyncedGuiDescription {
     private static final int INVENTORY_SIZE = 27;
 
     public HubGuiDescription(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
-        super(Port_a_vault.HUB_SCREEN_HANDLER_TYPE , syncId, playerInventory, getBlockInventory(context, INVENTORY_SIZE), getBlockPropertyDelegate(context));
+        super(Port_a_vault.HUB_SCREEN_HANDLER_TYPE, syncId, playerInventory, getBlockInventory(context, INVENTORY_SIZE), getBlockPropertyDelegate(context));
 
         WGridPanel root = (WGridPanel) rootPanel;
         WBox box = new WBox(Axis.VERTICAL);
