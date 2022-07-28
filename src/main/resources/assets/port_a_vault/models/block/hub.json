@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "port_a_vault:block/hub_front",
+    "side": "minecraft:block/iron_block",
+    "top": "port_a_vault:block/hub_top"
+  }
+}

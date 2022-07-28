@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IAI",
+    "IOI",
+    "IBI"
+  ],
+  "key": {
+    "O": {
+      "item": "minecraft:lodestone"
+    },
+    "A": {
+      "item": "minecraft:nether_star"
+    },
+    "I": {
+      "item": "minecraft:iron_block"
+    },
+    "B": {
+      "item": "minecraft:redstone_block"
+    }
+  },
+  "result": {
+    "item": "port_a_vault:hub",
+    "count": 1
+  }
+}
+

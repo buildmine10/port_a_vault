@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "port_a_vault:block/hub",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "port_a_vault:block/hub"
+    },
+    "facing=south": {
+      "model": "port_a_vault:block/hub",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "port_a_vault:block/hub",
+      "y": 270
+    }
+  }
+}
+
