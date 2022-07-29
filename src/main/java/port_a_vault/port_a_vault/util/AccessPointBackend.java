@@ -3,6 +3,7 @@ package port_a_vault.port_a_vault.util;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.Pair;
@@ -327,10 +328,16 @@ public class AccessPointBackend {
         }
 
         if(!isSuccess){
+
+            //System.out.println("Searching for AIR");
             ArrayList<BigStack> possibleAirStacks = toBigStacks(search("Air", ""));
             for(BigStack _bigStack : possibleAirStacks){
-                if(_bigStack.name.compareTo("Air") == 0){//if the big stack is the same as the
+                if(_bigStack.getItem() == Items.AIR){//if the big stack is the same as the
+                    //System.out.println("hi");
                     _bigStack.insertStack(stack);
+                    if(stack.getCount() == 0){
+                        break;
+                    }
                 }
             }
         }

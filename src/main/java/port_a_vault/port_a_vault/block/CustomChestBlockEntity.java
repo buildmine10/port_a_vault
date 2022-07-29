@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
@@ -91,6 +92,8 @@ public class CustomChestBlockEntity extends LootableContainerBlockEntity {
         }
 
         return itemStack;
+
+
     }
 
 
@@ -98,7 +101,9 @@ public class CustomChestBlockEntity extends LootableContainerBlockEntity {
         this.checkLootInteraction(null);
         //the next line might be the source of a bug. This is Inventories.removeStack() remade for my wrapper class
         Port_a_vault.inventoryManager.markDirty();
+        this.markDirty();
         return slot >= 0 && slot < getItems().size() ? getItems().get(slot).setData(ItemStack.EMPTY) : ItemStack.EMPTY;
+
     }
 
     public void setStack(int slot, ItemStack stack) {

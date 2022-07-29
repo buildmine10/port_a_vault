@@ -51,6 +51,7 @@ public class Port_a_vault implements ModInitializer {
     public static final Item TEST2_ITEM = new BlockItem(TEST2_BLOCK, new FabricItemSettings().group(ItemGroup.MISC));
 
 
+
     public static final Block HUB_BLOCK = new Hub(FabricBlockSettings.of(Material.METAL));
     public static final Item HUB_ITEM = new BlockItem(HUB_BLOCK, new FabricItemSettings().group(ItemGroup.MISC));
     public static final BlockEntityType<HubBlockEntity> HUB_BLOCK_ENTITY = FabricBlockEntityTypeBuilder.create(HubBlockEntity::new, HUB_BLOCK).build(null);

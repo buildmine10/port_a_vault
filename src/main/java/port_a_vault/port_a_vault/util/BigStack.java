@@ -83,9 +83,14 @@ public class BigStack {
         Data(ArrayList<LinkedVariable<ItemStack>> itemStacks){
             ArrayList<Stack> stacks = new ArrayList<>();
             itemStacks.forEach(stack->{
-                if(!stack.isDeleted())
-                    if(stack.getData().getName().getString().compareTo(name) == 0)
+                if(!stack.isDeleted()){
+                    if(stack.getData().getName().getString().compareTo(name) == 0){
+                        //System.out.println(stack.getData().getCount());
                         stacks.add(new Stack(stack));
+                    }
+
+                }
+
             });
             sorted = new PriorityQueue<>(stacks);
         }
@@ -103,6 +108,7 @@ public class BigStack {
         while(!itemStacks.sorted.isEmpty()){
             LinkedVariable<ItemStack> stack = itemStacks.pop();
             if(!stack.isDeleted()){
+                //System.out.println(stack.getData().getCount());
                 out += stack.getData().getCount();
             }
         }
@@ -248,9 +254,11 @@ public class BigStack {
         while(!itemStacks.sorted.isEmpty()){
             var stack = itemStacks.pop();
             if(!stack.isDeleted()){
+                itemStacks.reset();
                 return stack.getData().getItem();
             }
         }
+        itemStacks.reset();
         return null;
     }
 

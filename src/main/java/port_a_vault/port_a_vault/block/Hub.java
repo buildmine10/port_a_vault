@@ -30,7 +30,10 @@ public class Hub extends BlockWithEntity {
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         // You need a Block.createScreenHandlerFactory implementation that delegates to the block entity,
         // such as the one from BlockWithEntity
-        player.openHandledScreen(state.createScreenHandlerFactory(world, pos));
+        if(!world.isClient){
+            player.openHandledScreen(state.createScreenHandlerFactory(world, pos));
+        }
+
         return ActionResult.SUCCESS;
     }
 }
