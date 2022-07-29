@@ -80,5 +80,7 @@ public class Port_a_vault implements ModInitializer {
 
         Registry.register(Registry.BLOCK, new Identifier("port_a_vault", "test2"), TEST2_BLOCK);
         Registry.register(Registry.ITEM, new Identifier("port_a_vault", "test2"), TEST2_ITEM);
+
+
     }
 }

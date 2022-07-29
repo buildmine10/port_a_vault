@@ -5,23 +5,19 @@ import io.github.cottonmc.cotton.gui.widget.*;
 import io.github.cottonmc.cotton.gui.widget.data.Axis;
 import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import io.github.cottonmc.cotton.gui.widget.icon.ItemIcon;
-import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.screen.Property;
 import net.minecraft.screen.ScreenHandlerContext;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import port_a_vault.port_a_vault.Port_a_vault;
-import port_a_vault.port_a_vault.block.Hub;
 import port_a_vault.port_a_vault.block.HubBlockEntity;
-import port_a_vault.port_a_vault.util.AccessPointBackend;
+import port_a_vault.port_a_vault.util.ScrollBar;
 
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class HubGuiDescription extends SyncedGuiDescription {
 
@@ -29,6 +25,7 @@ public class HubGuiDescription extends SyncedGuiDescription {
     private static final int INVENTORY_SIZE = 9*5;
 
     private static HashMap<BlockPos, HubBlockEntity> entities = new HashMap<>();
+    public static ScrollBar scrollBar = new ScrollBar(Axis.VERTICAL);
 
 
     public HubGuiDescription(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
@@ -37,6 +34,8 @@ public class HubGuiDescription extends SyncedGuiDescription {
         setRootPanel(root);
         //root.setSize(18 * 9, 200);
         root.setInsets(Insets.ROOT_PANEL);
+        AtomicBoolean buttonClicked = new AtomicBoolean(true);
+        AtomicBoolean buttonClickedNew = new AtomicBoolean(true);
 
 
         WGridPanel invenPanel = new WGridPanel();
@@ -63,10 +62,45 @@ public class HubGuiDescription extends SyncedGuiDescription {
 
         root.add(searchBar, 0, 0, 6*9, 10);
 
-        root.add(this.createPlayerInventoryPanel(), 0, 6*5+4+5);
+
+        WButton button = new WButton(Text.literal(""));
+        button.setIcon(new ItemIcon(Items.SAND));
+
+            button.setOnClick(() -> {
+                // This code runs on the client when you click the button.
+                System.out.println("Button clicked!");
+                if (!buttonClicked.get()) {
+                    buttonClickedNew.set(true);
+                    button.setIcon(new ItemIcon(Items.SAND));
+                    System.out.print("set to ");
+                    System.out.println(buttonClickedNew.get());
+                }
+                if (buttonClicked.get()) {
+                    buttonClickedNew.set(false);
+                    button.setIcon(new ItemIcon(Items.REDSTONE));
+                    System.out.print("set to ");
+                    System.out.println(buttonClickedNew.get());
+                }
+                buttonClicked.set(buttonClickedNew.get());
+            });
+        //button.setIcon(new ItemIcon(Items.SAND));
+
+        //WToggleButton toggleButton = new WToggleButton(tex,tex);
+
+
+        root.add(this.createPlayerInventoryPanel(), 0, 48);
 
         root.validate(this);
         //System.out.println("hi");
+        root.add(scrollBar, 55, 0, 5, 38);
+        root.add(button, 0, 39, 7, 19);
+
+//        toggleButton.setOnToggle(on -> {
+//            // This code runs on the client when you toggle the button.
+//            System.out.println("Toggle button toggled to " + (on ? "on" : "off"));
+//        });
+
+        //TODO: add armor slots??
 
 
         if(!world.isClient){

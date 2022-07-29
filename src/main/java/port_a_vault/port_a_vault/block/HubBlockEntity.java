@@ -159,6 +159,7 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
 
     public void scroll(int amount){
         scrollAmount += amount;
+        if (scrollAmount < 0) scrollAmount = 0;
         updateDisplayList();
     }
 
@@ -182,10 +183,12 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
 
         //traverse this in reverse to get the reversed sort
         for(int i = 0; i < size(); i++){
-            if(i + scrollAmount * 9 < items.size()){
-                displayStacks.set(i, backend.removeStack(items.get(i + scrollAmount * 9)));
-            }else{
-                displayStacks.set(i, ItemStack.EMPTY);
+            if (scrollAmount >= 0) {
+                if (i + scrollAmount * 9 < items.size()) {
+                    displayStacks.set(i, backend.removeStack(items.get(i + scrollAmount * 9)));
+                } else {
+                    displayStacks.set(i, ItemStack.EMPTY);
+                }
             }
 
         }

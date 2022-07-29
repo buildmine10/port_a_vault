@@ -65,7 +65,7 @@ public class AccessPointBackend {
         //ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1, pos.getZ(), removeStack(stacks.get(0)));
         insertStack(player.getStackInHand(hand));
     }
-    private boolean isUsingRedBlackTree = true;
+    private boolean isUsingRedBlackTree = false;
     private String channel = "";//technically it should never be on this channel (the empty string channel)
 
     //searches are performed by finding a subtree
