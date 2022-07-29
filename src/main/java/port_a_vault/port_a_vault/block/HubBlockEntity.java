@@ -174,11 +174,11 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
 
 
         //default sort is alphabetical
-        /*max to min item count sort
+        //max to min item count sort
         items.sort((a, b)->{
             return b.getCount() -a.getCount();
         });
-        */
+
 
         //traverse this in reverse to get the reversed sort
         for(int i = 0; i < size(); i++){
