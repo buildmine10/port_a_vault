@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "port_a_vault:vault"
+          "name": "port_a_vault:custom_chest"
         }
       ],
       "conditions": [
