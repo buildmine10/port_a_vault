@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "port_a_vault:hub",
+    "port_a_vault:custom_chest"
+  ]
+}
+
