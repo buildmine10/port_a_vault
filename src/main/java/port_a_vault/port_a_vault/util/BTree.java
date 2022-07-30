@@ -514,6 +514,9 @@ public class BTree{
             if(block.nodes.size() == 0){
                 return null;
             }
+            //if(index >= block.nodes.size()){
+            //    return null;
+            //}
             return block.nodes.get(index).data;
         }
 

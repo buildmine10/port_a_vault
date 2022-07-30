@@ -160,6 +160,10 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
     public void scroll(int amount){
         scrollAmount += amount;
         if (scrollAmount < 0) scrollAmount = 0;
+        if(items.size() / 9 > 0 && scrollAmount > items.size() / 9){
+            scrollAmount = items.size() / 9;
+        }
+        //System.out.println(scrollAmount);
         updateDisplayList();
     }
 
@@ -173,12 +177,23 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
 
         items = backend.toBigStacks(backend.search(searchQuery, ""));
 
+        //This is only done because for some reason it doesn't come out sorted when using redblack trees.
+        //It gets all the items, but somehow not sorted
+        //This doesn't make sense because the search relies on the data being sorted
+        //The search wouldn't work if it wasn't sorted. So at some point it gets unsorted
+        //Probably in the traversal that gets the items from the search result
+        //The way that items are added to the list might not be stable
+        if(backend.isUsingRedBlackTree()){
+            items.sort((a, b)->{
+                return a.getItem().getName().getString().compareTo(b.getItem().getName().getString());
+            });
+        }
 
         //default sort is alphabetical
         //max to min item count sort
-        items.sort((a, b)->{
-            return b.getCount() -a.getCount();
-        });
+        //items.sort((a, b)->{
+        //    return b.getCount() -a.getCount();
+        //});
 
 
         //traverse this in reverse to get the reversed sort
@@ -197,7 +212,6 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
     public void setSearchQuery(String name){
         searchQuery = name;
         //System.out.println(name);
-
         scrollAmount = 0;
         updateDisplayList();
     }
@@ -241,6 +255,7 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
     }
 
     public void putAway(){
+        //backend.generateTrees();//only needed because of inadequate tracking of air item stacks//but this crashes the game (For some reason)
         for(ItemStack stack : displayStacks){
             if(stack.getItem() != Items.AIR){
                 //System.out.println(stack.getName().getString() + ": " + stack.getCount());

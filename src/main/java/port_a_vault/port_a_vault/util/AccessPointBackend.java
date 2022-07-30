@@ -2,6 +2,7 @@ package port_a_vault.port_a_vault.util;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
@@ -65,7 +66,7 @@ public class AccessPointBackend {
         //ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1, pos.getZ(), removeStack(stacks.get(0)));
         insertStack(player.getStackInHand(hand));
     }
-    private boolean isUsingRedBlackTree = false;
+    private boolean isUsingRedBlackTree = true;
     private String channel = "";//technically it should never be on this channel (the empty string channel)
 
     //searches are performed by finding a subtree
@@ -104,6 +105,7 @@ public class AccessPointBackend {
         bTrees.put("", new BTree());//this overwrites the existing value, or just makes a value (this make a new tree)
 
         HashSet<Chest> chests = inventoryManager.getChestsOnChannel(channel);//gets the chests on the same channel as the access point
+
         for(Chest chest : chests){
             for(LinkedVariable<ItemStack> stack : chest.inventory){
                 bTrees.get("").insert(stack);
@@ -168,6 +170,7 @@ public class AccessPointBackend {
     }
     private void searchTraversalPart1(RedBlackTree2.Node node, ArrayList<LinkedVariable<ItemStack>> out, String end){
         searchTraversalPart1(node, out, end, true);
+
     }
 
     private ArrayList<LinkedVariable<ItemStack>> searchRedBlack(String name, RedBlackTree2 tree){
@@ -232,6 +235,11 @@ public class AccessPointBackend {
             ArrayList<LinkedVariable<ItemStack>> out = new ArrayList<>();
             if(minTarget != null){
                 searchTraversalPart1(minTarget, out, afterName);
+            }
+            for(var stack : out){
+                if(!stack.isDeleted()){
+                    System.out.println(stack.getData().getName().getString());
+                }
             }
             return out;
         }else{
@@ -346,7 +354,9 @@ public class AccessPointBackend {
 
     //removes a full stack from the big stack that is passed in
     public ItemStack removeStack(BigStack stack){
-        return stack.removeStack();
+        ItemStack out = stack.removeStack();
+        //airStacks.addAll(stack.getEmpty());
+        return out;
     }
 
     //Removes the specified amount the from big stack that is passed in
@@ -356,5 +366,14 @@ public class AccessPointBackend {
 
     public void setChannel(String channel){
         this.channel = channel;
+    }
+
+    public void switchTrees(){
+        isUsingRedBlackTree = !isUsingRedBlackTree;
+        generateTrees();
+    }
+
+    public boolean isUsingRedBlackTree(){
+        return isUsingRedBlackTree;
     }
 }

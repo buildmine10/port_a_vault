@@ -3,13 +3,16 @@ package port_a_vault.port_a_vault.block;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import port_a_vault.port_a_vault.Port_a_vault;
 
 public class Hub extends BlockWithEntity {
     public Hub(Settings settings) {
@@ -35,5 +38,15 @@ public class Hub extends BlockWithEntity {
         }
 
         return ActionResult.SUCCESS;
+    }
+
+    @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        if (state.getBlock() != newState.getBlock()) {
+            HubBlockEntity be = (HubBlockEntity)world.getBlockEntity(pos);
+            be.putAway();
+
+            super.onStateReplaced(state, world, pos, newState, moved);
+        }
     }
 }

@@ -66,41 +66,42 @@ public class HubGuiDescription extends SyncedGuiDescription {
         WButton button = new WButton(Text.literal(""));
         button.setIcon(new ItemIcon(Items.SAND));
 
-            button.setOnClick(() -> {
-                // This code runs on the client when you click the button.
-                System.out.println("Button clicked!");
-                if (!buttonClicked.get()) {
-                    buttonClickedNew.set(true);
-                    button.setIcon(new ItemIcon(Items.SAND));
-                    System.out.print("set to ");
-                    System.out.println(buttonClickedNew.get());
-                }
-                if (buttonClicked.get()) {
-                    buttonClickedNew.set(false);
-                    button.setIcon(new ItemIcon(Items.REDSTONE));
-                    System.out.print("set to ");
-                    System.out.println(buttonClickedNew.get());
-                }
-                buttonClicked.set(buttonClickedNew.get());
-            });
+        button.setOnClick(() -> {
+            // This code runs on the client when you click the button.
+            System.out.println("Button clicked!");
+            if (!buttonClicked.get()) {
+                buttonClickedNew.set(true);
+                button.setIcon(new ItemIcon(Items.SAND));
+                System.out.println("set to " + buttonClickedNew.get());
+                //System.out.println(buttonClickedNew.get());
+                getEntity().backend.switchTrees();
+            }else{
+                buttonClickedNew.set(false);
+                button.setIcon(new ItemIcon(Items.REDSTONE));
+                System.out.println("set to " + buttonClickedNew.get());
+                //System.out.println(buttonClickedNew.get());
+                getEntity().backend.switchTrees();
+            }
+            buttonClicked.set(buttonClickedNew.get());
+        });
         //button.setIcon(new ItemIcon(Items.SAND));
 
         //WToggleButton toggleButton = new WToggleButton(tex,tex);
 
 
-        root.add(this.createPlayerInventoryPanel(), 0, 48);
+        root.add(this.createPlayerInventoryPanel(), 0, 39);
 
         root.validate(this);
         //System.out.println("hi");
         root.add(scrollBar, 55, 0, 5, 38);
-        root.add(button, 0, 39, 7, 19);
+        root.add(button, 55, 42, 7, 19);
 
 //        toggleButton.setOnToggle(on -> {
 //            // This code runs on the client when you toggle the button.
 //            System.out.println("Toggle button toggled to " + (on ? "on" : "off"));
 //        });
 
-        //TODO: add armor slots??
+        //TODO: add armor slots??//no
 
 
         if(!world.isClient){
@@ -121,6 +122,5 @@ public class HubGuiDescription extends SyncedGuiDescription {
     public void close(PlayerEntity player) {
         super.close(player);
         getEntity().putAway();
-
     }
 }
