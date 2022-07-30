@@ -236,11 +236,11 @@ public class AccessPointBackend {
             if(minTarget != null){
                 searchTraversalPart1(minTarget, out, afterName);
             }
-            for(var stack : out){
-                if(!stack.isDeleted()){
-                    System.out.println(stack.getData().getName().getString());
-                }
-            }
+            //for(var stack : out){
+            //    if(!stack.isDeleted()){
+            //        System.out.println(stack.getData().getName().getString());
+            //    }
+            //}
             return out;
         }else{
             ArrayList<LinkedVariable<ItemStack>> out = new ArrayList<>();

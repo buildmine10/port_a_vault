@@ -68,17 +68,17 @@ public class HubGuiDescription extends SyncedGuiDescription {
 
         button.setOnClick(() -> {
             // This code runs on the client when you click the button.
-            System.out.println("Button clicked!");
+            //System.out.println("Button clicked!");
             if (!buttonClicked.get()) {
                 buttonClickedNew.set(true);
                 button.setIcon(new ItemIcon(Items.SAND));
-                System.out.println("set to " + buttonClickedNew.get());
+                //System.out.println("set to " + buttonClickedNew.get());
                 //System.out.println(buttonClickedNew.get());
                 getEntity().backend.switchTrees();
             }else{
                 buttonClickedNew.set(false);
                 button.setIcon(new ItemIcon(Items.REDSTONE));
-                System.out.println("set to " + buttonClickedNew.get());
+                //System.out.println("set to " + buttonClickedNew.get());
                 //System.out.println(buttonClickedNew.get());
                 getEntity().backend.switchTrees();
             }
