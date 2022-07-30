@@ -38,7 +38,7 @@ The inventories are not saved to nbt currently so the inventories do not save.
  */
 public class Port_a_vault implements ModInitializer {
 
-    public static final Block CUSTOM_CHEST_BLOCK = new CustomChest(FabricBlockSettings.of(Material.METAL));
+    public static final Block CUSTOM_CHEST_BLOCK = new CustomChest(FabricBlockSettings.of(Material.METAL).requiresTool());
     public static final Item CUSTOM_CHEST_ITEM = new BlockItem(CUSTOM_CHEST_BLOCK, new FabricItemSettings().group(ItemGroup.MISC));
     public static final BlockEntityType<CustomChestBlockEntity> CUSTOM_CHEST_ENTITY = FabricBlockEntityTypeBuilder.create(CustomChestBlockEntity::new, CUSTOM_CHEST_BLOCK).build(null);
     public static final ScreenHandlerType<CustomChestScreenHandler> CUSTOM_CHEST_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier("port_a_vault", "custom_chest"), CustomChestScreenHandler::new);
@@ -52,7 +52,7 @@ public class Port_a_vault implements ModInitializer {
 
 
 
-    public static final Block HUB_BLOCK = new Hub(FabricBlockSettings.of(Material.METAL));
+    public static final Block HUB_BLOCK = new Hub(FabricBlockSettings.of(Material.METAL).requiresTool());
     public static final Item HUB_ITEM = new BlockItem(HUB_BLOCK, new FabricItemSettings().group(ItemGroup.MISC));
     public static final BlockEntityType<HubBlockEntity> HUB_BLOCK_ENTITY = FabricBlockEntityTypeBuilder.create(HubBlockEntity::new, HUB_BLOCK).build(null);
     public static final ScreenHandlerType<HubGuiDescription> HUB_SCREEN_HANDLER_TYPE = Registry.register(Registry.SCREEN_HANDLER, new Identifier("port_a_vault", "hub"), new ScreenHandlerType<>((syncId, inventory) -> new HubGuiDescription(syncId, inventory, ScreenHandlerContext.EMPTY)));
