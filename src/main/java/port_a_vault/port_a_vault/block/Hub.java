@@ -4,7 +4,10 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -15,6 +18,9 @@ import org.jetbrains.annotations.Nullable;
 import port_a_vault.port_a_vault.Port_a_vault;
 
 public class Hub extends BlockWithEntity {
+
+    public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
+
     public Hub(Settings settings) {
         super(settings);
     }
@@ -48,5 +54,15 @@ public class Hub extends BlockWithEntity {
 
             super.onStateReplaced(state, world, pos, newState, moved);
         }
+    }
+
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+    }
+
+    @Override
+    public BlockState getPlacementState(ItemPlacementContext ctx) {
+        return (BlockState) this.getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
     }
 }
