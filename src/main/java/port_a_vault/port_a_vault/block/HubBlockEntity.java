@@ -25,12 +25,15 @@ import port_a_vault.port_a_vault.util.AccessPointBackend;
 import port_a_vault.port_a_vault.util.BigStack;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class HubBlockEntity extends LootableContainerBlockEntity implements NamedScreenHandlerFactory, Inventory, PropertyDelegateHolder {
 
     String channel = "";
     String searchQuery = "";
     int scrollAmount = 0;
+    public boolean isUsingAlphabetical = false;
+    public boolean isAccengingSort = false;
     DefaultedList<ItemStack> displayStacks = DefaultedList.ofSize(9 * 5, ItemStack.EMPTY);
     public AccessPointBackend backend = new AccessPointBackend();
 
@@ -191,9 +194,15 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
 
         //default sort is alphabetical
         //max to min item count sort
-        //items.sort((a, b)->{
-        //    return b.getCount() -a.getCount();
-        //});
+        if(!isUsingAlphabetical){
+            items.sort((a, b)->{
+                return a.getCount() - b.getCount();
+            });
+        }
+
+        if(!isAccengingSort){
+            Collections.reverse(items);
+        }
 
 
         //traverse this in reverse to get the reversed sort
@@ -205,8 +214,8 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
                     displayStacks.set(i, ItemStack.EMPTY);
                 }
             }
-
         }
+
     }
 
     public void setSearchQuery(String name){

@@ -68,7 +68,7 @@ public class HubGuiDescription extends SyncedGuiDescription {
             getEntity().setSearchQuery(string);
         });
 
-        root.add(searchBar, 0, 0, 6*9, 10);
+
 
 
         // red black button
@@ -82,10 +82,12 @@ public class HubGuiDescription extends SyncedGuiDescription {
                 redblackButtonClickedNew.set(true);
                 redblackButton.setIcon(new ItemIcon(Port_a_vault.BPLUS_ITEM));
                 getEntity().backend.switchTrees();
+                getEntity().updateDisplayList();
             }else{
                 redblackButtonClickedNew.set(false);
                 redblackButton.setIcon(new ItemIcon(Port_a_vault.REDBLACK_ITEM));
                 getEntity().backend.switchTrees();
+                getEntity().updateDisplayList();
             }
             redblackButtonClicked.set(redblackButtonClickedNew.get());
         });
@@ -93,35 +95,42 @@ public class HubGuiDescription extends SyncedGuiDescription {
 
         // ascending vs descending button
         WButton ascButton = new WButton(Text.literal(""));
-        ascButton.setIcon(new ItemIcon(Port_a_vault.UPARROW_ITEM));
+        ascButton.setIcon(new ItemIcon(Port_a_vault.DOWNARROW_ITEM));
 
         ascButton.setOnClick(() -> {
             // This code runs on the client when you click the ascButton.
             //System.out.println("ascButton clicked!");
             if (!ascButtonClicked.get()) {
                 ascButtonClickedNew.set(true);
-                ascButton.setIcon(new ItemIcon(Port_a_vault.UPARROW_ITEM));
+                ascButton.setIcon(new ItemIcon(Port_a_vault.DOWNARROW_ITEM));
+                getEntity().isAccengingSort = false;
+                getEntity().updateDisplayList();
             }else{
                 ascButtonClickedNew.set(false);
-                ascButton.setIcon(new ItemIcon(Port_a_vault.DOWNARROW_ITEM));
+                ascButton.setIcon(new ItemIcon(Port_a_vault.UPARROW_ITEM));
+                getEntity().isAccengingSort = true;
+                getEntity().updateDisplayList();
             }
             ascButtonClicked.set(ascButtonClickedNew.get());
         });
 
         // alphabetical vs quantity button
         WButton alphaButton = new WButton(Text.literal(""));
-        alphaButton.setIcon(new ItemIcon(Port_a_vault.A_ITEM));
+        alphaButton.setIcon(new ItemIcon(Port_a_vault.N_ITEM));
 
         alphaButton.setOnClick(() -> {
             // This code runs on the client when you click the alphaButton.
             //System.out.println("alphaButton clicked!");
             if (!alphaButtonClicked.get()) {
                 alphaButtonClickedNew.set(true);
-                alphaButton.setIcon(new ItemIcon(Port_a_vault.A_ITEM));
-
+                alphaButton.setIcon(new ItemIcon(Port_a_vault.N_ITEM));
+                getEntity().isUsingAlphabetical = false;
+                getEntity().updateDisplayList();
             }else{
                 alphaButtonClickedNew.set(false);
-                alphaButton.setIcon(new ItemIcon(Port_a_vault.N_ITEM));
+                alphaButton.setIcon(new ItemIcon(Port_a_vault.A_ITEM));
+                getEntity().isUsingAlphabetical = true;
+                getEntity().updateDisplayList();
             }
             alphaButtonClicked.set(alphaButtonClickedNew.get());
         });
@@ -132,19 +141,23 @@ public class HubGuiDescription extends SyncedGuiDescription {
         // set channel button
         WTextField setBar = new WTextField();
         WButton setButton = new WButton(Text.literal(""));
-        //setButton.setIcon(new ItemIcon(Port_a_vault.SET_ITEM));
+        setButton.setIcon(new ItemIcon(Port_a_vault.SET_ITEM));
 
         setButton.setOnClick(() -> {
             String channel = setBar.getText();
             System.out.println(channel);
             getEntity().backend.setChannel(channel);
+            getEntity().updateDisplayList();
         });
 
         root.add(this.createPlayerInventoryPanel(), 0, 39);
 
         root.validate(this);
         //System.out.println("hi");
-        root.add(scrollBar, 55, 0, 5, 38);
+        root.add(searchBar, 0, 0, 41, 10);
+        root.add(setButton, 42, 0, 7, 29);
+        root.add(setBar, 50, 0, 13, 10);
+        root.add(scrollBar, 57, 8, 5, 30);
         root.add(redblackButton, 56, 43, 7, 29);
         root.add(ascButton, 56, 51, 7, 29);
         root.add(alphaButton, 56, 59, 7, 29);
