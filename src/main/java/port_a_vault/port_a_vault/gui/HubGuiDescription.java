@@ -34,8 +34,16 @@ public class HubGuiDescription extends SyncedGuiDescription {
         setRootPanel(root);
         //root.setSize(18 * 9, 200);
         root.setInsets(Insets.ROOT_PANEL);
-        AtomicBoolean buttonClicked = new AtomicBoolean(true);
-        AtomicBoolean buttonClickedNew = new AtomicBoolean(true);
+
+        // button click states
+        AtomicBoolean redblackButtonClicked = new AtomicBoolean(true);
+        AtomicBoolean redblackButtonClickedNew = new AtomicBoolean(true);
+
+        AtomicBoolean ascButtonClicked = new AtomicBoolean(true);
+        AtomicBoolean ascButtonClickedNew = new AtomicBoolean(true);
+
+        AtomicBoolean alphaButtonClicked = new AtomicBoolean(true);
+        AtomicBoolean alphaButtonClickedNew = new AtomicBoolean(true);
 
 
         WGridPanel invenPanel = new WGridPanel();
@@ -51,7 +59,7 @@ public class HubGuiDescription extends SyncedGuiDescription {
             }
         }
 
-        root.add(invenPanel, 0, 3+5);
+
 
         WTextField searchBar = new WTextField();
 
@@ -60,48 +68,88 @@ public class HubGuiDescription extends SyncedGuiDescription {
             getEntity().setSearchQuery(string);
         });
 
-        root.add(searchBar, 0, 0, 6*9, 10);
 
 
-        WButton button = new WButton(Text.literal(""));
-        button.setIcon(new ItemIcon(Items.SAND));
+        // red black button
+        WButton redblackButton = new WButton(Text.literal(""));
+        redblackButton.setIcon(new ItemIcon(Port_a_vault.BPLUS_ITEM));
 
-        button.setOnClick(() -> {
-            // This code runs on the client when you click the button.
-            //System.out.println("Button clicked!");
-            if (!buttonClicked.get()) {
-                buttonClickedNew.set(true);
-                button.setIcon(new ItemIcon(Items.SAND));
-                //System.out.println("set to " + buttonClickedNew.get());
-                //System.out.println(buttonClickedNew.get());
+        redblackButton.setOnClick(() -> {
+            // This code runs on the client when you click the redblackButton.
+            //System.out.println("redblackButton clicked!");
+            if (!redblackButtonClicked.get()) {
+                redblackButtonClickedNew.set(true);
+                redblackButton.setIcon(new ItemIcon(Port_a_vault.BPLUS_ITEM));
+                //System.out.println("set to " + redblackButtonClickedNew.get());
+                //System.out.println(redblackButtonClickedNew.get());
                 getEntity().backend.switchTrees();
             }else{
-                buttonClickedNew.set(false);
-                button.setIcon(new ItemIcon(Items.REDSTONE));
-                //System.out.println("set to " + buttonClickedNew.get());
-                //System.out.println(buttonClickedNew.get());
+                redblackButtonClickedNew.set(false);
+                redblackButton.setIcon(new ItemIcon(Port_a_vault.REDBLACK_ITEM));
+                //System.out.println("set to " + redblackButtonClickedNew.get());
+                //System.out.println(redblackButtonClickedNew.get());
                 getEntity().backend.switchTrees();
             }
-            buttonClicked.set(buttonClickedNew.get());
+            redblackButtonClicked.set(redblackButtonClickedNew.get());
         });
-        //button.setIcon(new ItemIcon(Items.SAND));
 
-        //WToggleButton toggleButton = new WToggleButton(tex,tex);
+        // ascending vs descending button
+        WButton ascButton = new WButton(Text.literal(""));
+        ascButton.setIcon(new ItemIcon(Port_a_vault.UPARROW_ITEM));
 
+        ascButton.setOnClick(() -> {
+            // This code runs on the client when you click the ascButton.
+            //System.out.println("ascButton clicked!");
+            if (!ascButtonClicked.get()) {
+                ascButtonClickedNew.set(true);
+                ascButton.setIcon(new ItemIcon(Port_a_vault.UPARROW_ITEM));
+                //System.out.println("set to " + ascButtonClickedNew.get());
+                //System.out.println(ascButtonClickedNew.get());
 
-        root.add(this.createPlayerInventoryPanel(), 0, 39);
+            }else{
+                ascButtonClickedNew.set(false);
+                ascButton.setIcon(new ItemIcon(Port_a_vault.DOWNARROW_ITEM));
+                //System.out.println("set to " + ascButtonClickedNew.get());
+                //System.out.println(ascButtonClickedNew.get());
+
+            }
+            ascButtonClicked.set(ascButtonClickedNew.get());
+        });
+
+        // alpha vs quantity button
+        WButton alphaButton = new WButton(Text.literal(""));
+        alphaButton.setIcon(new ItemIcon(Port_a_vault.A_ITEM));
+
+        alphaButton.setOnClick(() -> {
+            // This code runs on the client when you click the alphaButton.
+            //System.out.println("alphaButton clicked!");
+            if (!alphaButtonClicked.get()) {
+                alphaButtonClickedNew.set(true);
+                alphaButton.setIcon(new ItemIcon(Port_a_vault.A_ITEM));
+                //System.out.println("set to " + alphaButtonClickedNew.get());
+                //System.out.println(alphaButtonClickedNew.get());
+
+            }else{
+                alphaButtonClickedNew.set(false);
+                alphaButton.setIcon(new ItemIcon(Port_a_vault.N_ITEM));
+                //System.out.println("set to " + alphaButtonClickedNew.get());
+                //System.out.println(alphaButtonClickedNew.get());
+
+            }
+            alphaButtonClicked.set(alphaButtonClickedNew.get());
+        });
+
 
         root.validate(this);
         //System.out.println("hi");
+        root.add(invenPanel, 0, 3+5);
+        root.add(searchBar, 0, 0, 6*9, 10);
+        root.add(this.createPlayerInventoryPanel(), 0, 39);
         root.add(scrollBar, 55, 0, 5, 38);
-        root.add(button, 55, 42, 7, 19);
+        root.add(redblackButton, 55, 43, 7, 29);
+        root.add(ascButton, 55, 51, 7, 29);
+        root.add(alphaButton, 55, 59, 7, 29);
 
-//        toggleButton.setOnToggle(on -> {
-//            // This code runs on the client when you toggle the button.
-//            System.out.println("Toggle button toggled to " + (on ? "on" : "off"));
-//        });
-
-        //TODO: add armor slots??//no
 
 
         if(!world.isClient){

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0" : "port_a_vault:item/uparr"
+  }
+}
