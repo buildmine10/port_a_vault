@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.NamedScreenHandlerFactory;
@@ -64,10 +65,9 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
 
     @Override
     protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
+        HubGuiDescription out = new HubGuiDescription(syncId, playerInventory, ScreenHandlerContext.create(world, this.getPos()));
         updateDisplayList();
         backend.generateTrees();
-        HubGuiDescription out = new HubGuiDescription(syncId, playerInventory, ScreenHandlerContext.create(world, this.getPos()));
-
         return out;
     }
 
@@ -85,47 +85,38 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
     @Override
     public ItemStack getStack(int slot) {
         this.checkLootInteraction(null);
-
-        //if(slot + scrollAmount * 9 < items.size()){
-        //    return new ItemStack(items.get(slot + scrollAmount * 9).getItem(),items.get(slot + scrollAmount * 9).getCount());//
-        //}else {
-        //    return ItemStack.EMPTY;
-        //}
-
+        System.out.println("h");
         return displayStacks.get(slot);
     }
 
     @Override
     public ItemStack removeStack(int slot, int amount) {
         this.checkLootInteraction(null);
-        //ItemStack out = backend.removeCount(items.get(slot + scrollAmount * 9), amount);
-        updateDisplayList();
-        //Port_a_vault.inventoryManager.markDirty();
-        //return out;
-        //return displayStacks.get(slot);//new ItemStack(Items.AIR);//
-
+        System.out.println("hi");
         ItemStack result = Inventories.splitStack(getInvStackList(), slot, amount);
         if (!result.isEmpty()) {
             markDirty();
         }
+        updateDisplayList();
         return result;
     }
 
     @Override
     public ItemStack removeStack(int slot) {
-        //System.out.println("hi");
+        System.out.println("hie");
         this.checkLootInteraction(null);
-        //ItemStack out = backend.removeStack(items.get(slot + scrollAmount * 9));
+        ItemStack out = Inventories.removeStack(getInvStackList(), slot);
+
         updateDisplayList();
-        //Port_a_vault.inventoryManager.markDirty();
-        //return out;
-        //return displayStacks.get(slot);//new ItemStack(Items.AIR);//
-        return Inventories.removeStack(getInvStackList(), slot);
+        this.markDirty();
+        Port_a_vault.inventoryManager.markDirty();
+
+        return out;
     }
 
     @Override
     public void setStack(int slot, ItemStack stack) {
-        //System.out.println(slot);
+        System.out.println(slot);
         this.checkLootInteraction(null);
         this.displayStacks.set(slot, stack);
         if (stack.getCount() > this.getMaxCountPerStack()) {
@@ -168,14 +159,15 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
     }
 
     public void updateDisplayList(){
-        //System.out.println("Updating List");
+        System.out.println("Updating List");
 
         putAway();
         //displayStack
-
+        backend.setChannel("");
         backend.generateTrees();
 
-        items = backend.toBigStacks(backend.search(searchQuery, ""));
+        var hi = backend.search(searchQuery, "");
+        items = backend.toBigStacks(hi);
 
         //This is only done because for some reason it doesn't come out sorted when using redblack trees.
         //It gets all the items, but somehow not sorted
@@ -255,6 +247,7 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
     }
 
     public void putAway(){
+        //backend.insertStack(temp);
         //backend.generateTrees();//only needed because of inadequate tracking of air item stacks//but this crashes the game (For some reason)
         for(ItemStack stack : displayStacks){
             if(stack.getItem() != Items.AIR){

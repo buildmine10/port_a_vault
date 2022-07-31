@@ -368,6 +368,10 @@ public class AccessPointBackend {
         this.channel = channel;
     }
 
+    public String getChannel(){
+        return channel;
+    }
+
     public void switchTrees(){
         isUsingRedBlackTree = !isUsingRedBlackTree;
         generateTrees();

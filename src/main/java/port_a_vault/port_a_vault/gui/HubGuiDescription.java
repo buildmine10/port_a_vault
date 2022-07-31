@@ -56,6 +56,7 @@ public class HubGuiDescription extends SyncedGuiDescription {
 
                 WItemSlot itemSlot = WItemSlot.of(blockInventory, x + y * 9);
                 invenPanel.add(itemSlot, x, y);
+                //itemSlot.get
             }
         }
 
@@ -119,7 +120,7 @@ public class HubGuiDescription extends SyncedGuiDescription {
             ascButtonClicked.set(ascButtonClickedNew.get());
         });
 
-        // alpha vs quantity button
+        // alphabetical vs quantity button
         WButton alphaButton = new WButton(Text.literal(""));
         alphaButton.setIcon(new ItemIcon(Port_a_vault.A_ITEM));
 
