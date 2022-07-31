@@ -67,6 +67,8 @@ public class Port_a_vault implements ModInitializer {
     public static final Item A_ITEM = new Item(new FabricItemSettings().group(ItemGroup.MISC));
     public static final Item N_ITEM = new Item(new FabricItemSettings().group(ItemGroup.MISC));
 
+    public static final Item SET_ITEM = new Item(new FabricItemSettings().group(ItemGroup.MISC));
+
 
     //public static NetworkGlobals network;
     public static InventoryManager inventoryManager;
@@ -100,5 +102,7 @@ public class Port_a_vault implements ModInitializer {
 
         Registry.register(Registry.ITEM, new Identifier("port_a_vault", "a"), A_ITEM);
         Registry.register(Registry.ITEM, new Identifier("port_a_vault", "n"), N_ITEM);
+
+        Registry.register(Registry.ITEM, new Identifier("port_a_vault", "set"), SET_ITEM);
     }
 }

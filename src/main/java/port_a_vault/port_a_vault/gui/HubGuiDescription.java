@@ -68,6 +68,9 @@ public class HubGuiDescription extends SyncedGuiDescription {
             getEntity().setSearchQuery(string);
         });
 
+        // text field for setting channel
+        WTextField setBar = new WTextField();
+
 
 
         // red black button
@@ -139,16 +142,27 @@ public class HubGuiDescription extends SyncedGuiDescription {
             alphaButtonClicked.set(alphaButtonClickedNew.get());
         });
 
+        // set channel button
+        WButton setButton = new WButton(Text.literal(""));
+        setButton.setIcon(new ItemIcon(Port_a_vault.SET_ITEM));
+
+        setButton.setOnClick(() -> {
+            String channel = setBar.getText();
+            System.out.println(channel);
+            getEntity().backend.setChannel(channel);
+        });
 
         root.validate(this);
         //System.out.println("hi");
         root.add(invenPanel, 0, 3+5);
-        root.add(searchBar, 0, 0, 6*9, 10);
+        root.add(searchBar, 0, 0, 41, 10);
+        root.add(setButton, 42, 0, 7, 29);
+        root.add(setBar, 50, 0, 13, 10);
         root.add(this.createPlayerInventoryPanel(), 0, 39);
-        root.add(scrollBar, 55, 0, 5, 38);
-        root.add(redblackButton, 55, 43, 7, 29);
-        root.add(ascButton, 55, 51, 7, 29);
-        root.add(alphaButton, 55, 59, 7, 29);
+        root.add(scrollBar, 57, 8, 5, 30);
+        root.add(redblackButton, 56, 43, 7, 29);
+        root.add(ascButton, 56, 51, 7, 29);
+        root.add(alphaButton, 56, 59, 7, 29);
 
 
 
