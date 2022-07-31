@@ -10,6 +10,7 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -18,14 +19,15 @@ import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.checkerframework.checker.units.qual.A;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import port_a_vault.port_a_vault.Port_a_vault;
 import port_a_vault.port_a_vault.gui.HubGuiDescription;
 import port_a_vault.port_a_vault.util.AccessPointBackend;
 import port_a_vault.port_a_vault.util.BigStack;
+import port_a_vault.port_a_vault.util.Chest;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 public class HubBlockEntity extends LootableContainerBlockEntity implements NamedScreenHandlerFactory, Inventory, PropertyDelegateHolder {
 
@@ -41,9 +43,8 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
 
     protected HubBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
-        backend.setChannel(channel);
-        backend.generateTrees();
-        updateDisplayList();
+        //setChannel(channel);
+        //backend.generateTrees();
     }
     public HubBlockEntity(BlockPos blockPos, BlockState blockState) {
         this(Port_a_vault.HUB_BLOCK_ENTITY, blockPos, blockState);
@@ -110,6 +111,7 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
         ItemStack result = Inventories.splitStack(getInvStackList(), slot, amount);
         if (!result.isEmpty()) {
             markDirty();
+            Port_a_vault.inventoryManager.markDirty();
         }
         return result;
     }
@@ -123,6 +125,8 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
         //Port_a_vault.inventoryManager.markDirty();
         //return out;
         //return displayStacks.get(slot);//new ItemStack(Items.AIR);//
+        Port_a_vault.inventoryManager.markDirty();
+        markDirty();
         return Inventories.removeStack(getInvStackList(), slot);
     }
 
@@ -271,5 +275,76 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
                 backend.insertStack(stack);
             }
         }
+
+        Port_a_vault.inventoryManager.markDirty();
+    }
+
+
+    public String getChannel(){
+        return channel;
+    }
+    public void setChannel(String channel){
+        this.channel = channel;
+        backend.setChannel(channel);
+
+        updateChannel();
+        this.markDirty();
+    }
+
+
+    ArrayDeque<BlockPos> placesToUpdate = new ArrayDeque<>();
+    private void updateChannel(){
+        //System.out.println("UPDATEING CHANNEL");
+        placesToUpdate.clear();
+        placesToUpdate.add(pos.add(1, 0, 0));
+        placesToUpdate.add(pos.add(-1, 0, 0));
+        placesToUpdate.add(pos.add(0, 0, 1));
+        placesToUpdate.add(pos.add(0, 0, -1));
+        placesToUpdate.add(pos.add(0, 1, 0));
+        placesToUpdate.add(pos.add(0, -1, 0));
+        while(!placesToUpdate.isEmpty()){
+            BlockPos currentPos = placesToUpdate.pop();
+            //System.out.println(currentPos.toShortString());
+            Chest chest = Port_a_vault.inventoryManager.getChest(currentPos.toShortString());
+            if(chest != null){
+                //System.out.println("Not null: " + currentPos.toShortString() + " - " + chest.channel);
+                if(chest.channel.compareTo(channel) != 0){//if the chest is not on the same channel
+                    //System.out.println("Changing: " + currentPos.toShortString());
+                    Port_a_vault.inventoryManager.setChestChannel(chest, channel);
+                    //chest.channel = channel;
+                    placesToUpdate.add(currentPos.add(1, 0, 0));
+                    placesToUpdate.add(currentPos.add(-1, 0, 0));
+                    placesToUpdate.add(currentPos.add(0, 0, 1));
+                    placesToUpdate.add(currentPos.add(0, 0, -1));
+                    placesToUpdate.add(currentPos.add(0, 1, 0));
+                    placesToUpdate.add(currentPos.add(0, -1, 0));
+                }
+            }
+        }
+
+        //System.out.println("done changing");
+        //for(var chest : Port_a_vault.inventoryManager.chests.values()){
+        //    System.out.println(chest.getPos() + ": " + Port_a_vault.inventoryManager.getChest(chest.getPos()));
+        //}
+    }
+
+    @Override
+    public void writeNbt(NbtCompound tag) {
+        // Save the current value of the number to the tag
+        tag.putString("channel", channel);
+        tag.putBoolean("isAlphabetical", isUsingAlphabetical);
+        tag.putBoolean("isAscending", isAccengingSort);
+
+        super.writeNbt(tag);
+    }
+
+    @Override
+    public void readNbt(NbtCompound tag) {
+        super.readNbt(tag);
+
+        channel = tag.getString("channel");
+        isUsingAlphabetical = tag.getBoolean("isAlphabetical");
+        isAccengingSort = tag.getBoolean("isAscending");
+        backend.setChannel(channel);
     }
 }

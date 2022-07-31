@@ -51,6 +51,7 @@ public class Hub extends BlockWithEntity {
         if (state.getBlock() != newState.getBlock()) {
             HubBlockEntity be = (HubBlockEntity)world.getBlockEntity(pos);
             be.putAway();
+            be.setChannel("");
 
             super.onStateReplaced(state, world, pos, newState, moved);
         }

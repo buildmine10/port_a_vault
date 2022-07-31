@@ -66,10 +66,8 @@ public class InventoryManager extends PersistentState {
 
 
 
-
-    public AccessPointBackend backend = new AccessPointBackend();
     public static final int rowsPerChest = 3;
-    private HashMap<String, Chest> chests = new HashMap<>();//chest coordinates to chest data
+    public HashMap<String, Chest> chests = new HashMap<>();//chest coordinates to chest data
     private HashMap<String, HashSet<Chest>> chestChannels = new HashMap<>();
 
 
@@ -124,5 +122,11 @@ public class InventoryManager extends PersistentState {
         return chestChannels.getOrDefault(channel, new HashSet<>());
     }
 
-
+    public void setChestChannel(Chest chest, String channel){
+        //System.out.println(chest.channel + " | " + channel);
+        chestChannels.get(chest.channel).remove(chest);
+        chestChannels.putIfAbsent(channel, new HashSet<>());
+        chestChannels.get(channel).add(chest);
+        chest.channel = channel;
+    }
 }

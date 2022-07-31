@@ -119,4 +119,8 @@ public class Chest {
 
         return "";
     }
+
+    public String getPos(){
+        return coordToString(x, y, z);
+    }
 }

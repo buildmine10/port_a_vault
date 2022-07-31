@@ -7,7 +7,6 @@ import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import io.github.cottonmc.cotton.gui.widget.icon.ItemIcon;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -17,7 +16,6 @@ import port_a_vault.port_a_vault.util.ScrollBar;
 
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class HubGuiDescription extends SyncedGuiDescription {
 
@@ -32,7 +30,6 @@ public class HubGuiDescription extends SyncedGuiDescription {
         super(Port_a_vault.HUB_SCREEN_HANDLER_TYPE , syncId, playerInventory, getBlockInventory(context, INVENTORY_SIZE), getBlockPropertyDelegate(context, PROPERTY_COUNT));
         WGridPanel root = new WGridPanel(3);
         setRootPanel(root);
-        //root.setSize(18 * 9, 200);
         root.setInsets(Insets.ROOT_PANEL);
 
         // button click states
@@ -145,22 +142,13 @@ public class HubGuiDescription extends SyncedGuiDescription {
 
         setButton.setOnClick(() -> {
             String channel = setBar.getText();
-            System.out.println(channel);
-            getEntity().backend.setChannel(channel);
+            //System.out.println(channel);
+            getEntity().setChannel(channel);
             getEntity().updateDisplayList();
         });
 
-        root.add(this.createPlayerInventoryPanel(), 0, 39);
 
-        root.validate(this);
         //System.out.println("hi");
-        root.add(searchBar, 0, 0, 41, 10);
-        root.add(setButton, 42, 0, 7, 29);
-        root.add(setBar, 50, 0, 13, 10);
-        root.add(scrollBar, 57, 8, 5, 30);
-        root.add(redblackButton, 56, 43, 7, 29);
-        root.add(ascButton, 56, 51, 7, 29);
-        root.add(alphaButton, 56, 59, 7, 29);
 
 
         //TODO: add armor slots??//no
@@ -171,12 +159,25 @@ public class HubGuiDescription extends SyncedGuiDescription {
             HubBlockEntity entity = (HubBlockEntity)world.getBlockEntity(pos);
             entities.put(pos, entity);
             getEntity().setSearchQuery("");
+            getEntity().backend.generateTrees();
         }
+
+
+        root.add(this.createPlayerInventoryPanel(), 0, 39);
+
+        root.add(searchBar, 0, 0, 41, 10);
+        root.add(setButton, 42, 0, 7, 29);
+        root.add(setBar, 50, 0, 13, 10);
+        root.add(scrollBar, 57, 8, 5, 30);
+        root.add(redblackButton, 56, 43, 7, 29);
+        root.add(ascButton, 56, 51, 7, 29);
+        root.add(alphaButton, 56, 59, 7, 29);
+
+        root.validate(this);
     }
 
     public HubBlockEntity getEntity(){
-        //System.out.print(new BlockPos(getPropertyDelegate().get(0), getPropertyDelegate().get(1), getPropertyDelegate().get(2)).toShortString());
-        //System.out.println(entities.get(new BlockPos(getPropertyDelegate().get(0), getPropertyDelegate().get(1), getPropertyDelegate().get(2))));
+        //return HubBlockEntity.entities.get(new BlockPos(getPropertyDelegate().get(0), getPropertyDelegate().get(1), getPropertyDelegate().get(2)).toShortString());
         return entities.get(new BlockPos(getPropertyDelegate().get(0), getPropertyDelegate().get(1), getPropertyDelegate().get(2)));
     }
 

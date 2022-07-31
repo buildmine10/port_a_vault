@@ -90,6 +90,9 @@ public class AccessPointBackend {
         redBlackTrees.put("", new RedBlackTree2());
 
         HashSet<Chest> chests = inventoryManager.getChestsOnChannel(channel);//gets the chests on the same channel as the access point
+        if(channel.compareTo("") == 0){//the "" channel is the not-on-a-channel channel, hubs do no have access
+            chests.clear();
+        }
         for(Chest chest : chests){
             for(LinkedVariable<ItemStack> stack : chest.inventory){
                 redBlackTrees.get("").insert(stack);
@@ -104,7 +107,9 @@ public class AccessPointBackend {
         bTrees.put("", new BTree());//this overwrites the existing value, or just makes a value (this make a new tree)
 
         HashSet<Chest> chests = inventoryManager.getChestsOnChannel(channel);//gets the chests on the same channel as the access point
-
+        if(channel.compareTo("") == 0){//the "" channel is the not-on-a-channel channel, hubs do no have access
+            chests.clear();
+        }
         for(Chest chest : chests){
             for(LinkedVariable<ItemStack> stack : chest.inventory){
                 bTrees.get("").insert(stack);
