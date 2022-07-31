@@ -57,6 +57,20 @@ public class Port_a_vault implements ModInitializer {
     public static final BlockEntityType<HubBlockEntity> HUB_BLOCK_ENTITY = FabricBlockEntityTypeBuilder.create(HubBlockEntity::new, HUB_BLOCK).build(null);
     public static final ScreenHandlerType<HubGuiDescription> HUB_SCREEN_HANDLER_TYPE = Registry.register(Registry.SCREEN_HANDLER, new Identifier("port_a_vault", "hub"), new ScreenHandlerType<>((syncId, inventory) -> new HubGuiDescription(syncId, inventory, ScreenHandlerContext.EMPTY)));
 
+
+    public static final Item UPARROW_ITEM = new Item(new FabricItemSettings().group(ItemGroup.MISC));
+    public static final Item DOWNARROW_ITEM = new Item(new FabricItemSettings().group(ItemGroup.MISC));
+
+    public static final Item REDBLACK_ITEM = new Item(new FabricItemSettings().group(ItemGroup.MISC));
+    public static final Item BPLUS_ITEM = new Item(new FabricItemSettings().group(ItemGroup.MISC));
+
+    public static final Item A_ITEM = new Item(new FabricItemSettings().group(ItemGroup.MISC));
+    public static final Item N_ITEM = new Item(new FabricItemSettings().group(ItemGroup.MISC));
+
+    public static final Item SET_ITEM = new Item(new FabricItemSettings().group(ItemGroup.MISC));
+
+
+
     //public static NetworkGlobals network;
     public static InventoryManager inventoryManager;
 
@@ -82,5 +96,15 @@ public class Port_a_vault implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier("port_a_vault", "test2"), TEST2_ITEM);
 
 
+        Registry.register(Registry.ITEM, new Identifier("port_a_vault", "uparr"), UPARROW_ITEM);
+        Registry.register(Registry.ITEM, new Identifier("port_a_vault", "downarr"), DOWNARROW_ITEM);
+
+        Registry.register(Registry.ITEM, new Identifier("port_a_vault", "redblack"), REDBLACK_ITEM);
+        Registry.register(Registry.ITEM, new Identifier("port_a_vault", "bplus"), BPLUS_ITEM);
+
+        Registry.register(Registry.ITEM, new Identifier("port_a_vault", "a"), A_ITEM);
+        Registry.register(Registry.ITEM, new Identifier("port_a_vault", "n"), N_ITEM);
+
+        Registry.register(Registry.ITEM, new Identifier("port_a_vault", "set"), SET_ITEM);
     }
 }

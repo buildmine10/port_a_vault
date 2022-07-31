@@ -13,10 +13,7 @@ import net.minecraft.world.World;
 import org.checkerframework.checker.units.qual.A;
 import port_a_vault.port_a_vault.Port_a_vault;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Objects;
+import java.util.*;
 
 //the trees only add chests when generate trees is run
 //chests are automatically removed when chests are removed
