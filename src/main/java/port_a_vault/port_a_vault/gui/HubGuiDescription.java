@@ -67,7 +67,7 @@ public class HubGuiDescription extends SyncedGuiDescription {
         searchBar.setChangedListener(string->{
             inst.setText(Text.literal(""));
             getEntity().setSearchQuery(string);
-            if(string.equals("")) {
+            if(string.equals("") && getEntity().getChannel().equals("")) {
                 inst.setText(Text.literal("set channel to use"));
             }
         });
@@ -154,8 +154,17 @@ public class HubGuiDescription extends SyncedGuiDescription {
             //System.out.println(channel);
             getEntity().setChannel(channel);
             getEntity().updateDisplayList();
+            if(!channel.equals("")){
+                inst.setText(Text.literal(""));
+            }
         });
 
+
+        //setBar.setChangedListener(string->{
+        //    if(string.equals("") && !getEntity().getChannel().equals("")){
+        //        setBar.setText(getEntity().getChannel());
+        //    }
+        //});
 
         //System.out.println("hi");
 
