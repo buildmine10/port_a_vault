@@ -71,17 +71,17 @@ public class AccessPointBackend {
     //searches are performed by finding a subtree
     //filters are performed by using the map
     //"" (empty string) is the filter for no filter
-    HashMap<String, RedBlackTree2> redBlackTrees = new HashMap<>();
-    HashMap<String, BTree> bTrees = new HashMap<>();
+    UnorderedMap<RedBlackTree2> redBlackTrees = new UnorderedMap<>();
+    UnorderedMap<BTree> bTrees = new UnorderedMap<>();
 
 
     public void generateTrees(){
         if(isUsingRedBlackTree){
             generateRedBlackTrees();
-            bTrees = new HashMap<>();
+            bTrees = new UnorderedMap<>();
         }else{
             generateBTrees();
-            redBlackTrees = new HashMap<>();
+            redBlackTrees = new UnorderedMap<>();
         }
     }
 
@@ -89,7 +89,7 @@ public class AccessPointBackend {
         InventoryManager inventoryManager = Port_a_vault.inventoryManager;
         redBlackTrees.put("", new RedBlackTree2());
 
-        HashSet<Chest> chests = inventoryManager.getChestsOnChannel(channel);//gets the chests on the same channel as the access point
+        UnorderedSet<Chest> chests = inventoryManager.getChestsOnChannel(channel);//gets the chests on the same channel as the access point
         if(channel.compareTo("") == 0){//the "" channel is the not-on-a-channel channel, hubs do no have access
             chests.clear();
         }
@@ -106,7 +106,7 @@ public class AccessPointBackend {
         InventoryManager inventoryManager = Port_a_vault.inventoryManager;
         bTrees.put("", new BTree());//this overwrites the existing value, or just makes a value (this make a new tree)
 
-        HashSet<Chest> chests = inventoryManager.getChestsOnChannel(channel);//gets the chests on the same channel as the access point
+        UnorderedSet<Chest> chests = inventoryManager.getChestsOnChannel(channel);//gets the chests on the same channel as the access point
         if(channel.compareTo("") == 0){//the "" channel is the not-on-a-channel channel, hubs do no have access
             chests.clear();
         }

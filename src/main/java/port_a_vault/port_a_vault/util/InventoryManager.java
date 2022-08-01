@@ -40,7 +40,7 @@ public class InventoryManager extends PersistentState {
     public NbtCompound writeNbt(NbtCompound nbt) {
         NbtCompound chestsNbt = new NbtCompound();
 
-        for(String pos : chests.keySet()){
+        for(String pos : chests.getKeys()){
             //System.out.println(chests.get(pos));
             chestsNbt.put(pos, chests.get(pos).toNbt());
         }
@@ -56,8 +56,8 @@ public class InventoryManager extends PersistentState {
         for(String pos : chestsNbt.getKeys()){
             Chest chest = new Chest(chestsNbt.getCompound(pos), pos);
             manager.chests.put(pos, chest);
-            manager.chestChannels.putIfAbsent(chest.channel, new HashSet<>());
-            manager.chestChannels.get(chest.channel).add(chest);
+            manager.chestChannels.putIfAbsent(chest.channel, new UnorderedSet<>());
+            manager.chestChannels.get(chest.channel).put(chest);
         }
 
         manager.printChestsOnChannel("");
@@ -67,8 +67,8 @@ public class InventoryManager extends PersistentState {
 
 
     public static final int rowsPerChest = 3;
-    public HashMap<String, Chest> chests = new HashMap<>();//chest coordinates to chest data
-    private HashMap<String, HashSet<Chest>> chestChannels = new HashMap<>();
+    public UnorderedMap<Chest> chests = new UnorderedMap<>();//chest coordinates to chest data
+    private UnorderedMap<UnorderedSet<Chest>> chestChannels = new UnorderedMap<>();
 
 
     public Chest getChest(String pos){
@@ -78,8 +78,8 @@ public class InventoryManager extends PersistentState {
     public void addChest(String pos){
         Chest chest = new Chest(pos);
         if(chests.putIfAbsent(pos, chest) == null){//if it needed to be created
-            chestChannels.putIfAbsent(chest.channel, new HashSet<>());
-            chestChannels.get(chest.channel).add(chest);
+            chestChannels.putIfAbsent(chest.channel, new UnorderedSet<>());
+            chestChannels.get(chest.channel).put(chest);
         }
 
         markDirty();
@@ -87,8 +87,8 @@ public class InventoryManager extends PersistentState {
 
     public void removeChest(String pos){
         //System.out.println("removed chest");
-        chestChannels.getOrDefault(chests.get(pos).channel, new HashSet<>()).remove(chests.get(pos));
-        if(chestChannels.getOrDefault(chests.get(pos).channel, new HashSet<>()).isEmpty()){
+        chestChannels.getOrDefault(chests.get(pos).channel, new UnorderedSet<>()).remove(chests.get(pos));
+        if(chestChannels.getOrDefault(chests.get(pos).channel, new UnorderedSet<>()).isEmpty()){
             chestChannels.remove(chests.get(pos).channel);
         }
         chests.get(pos).delete();
@@ -97,12 +97,12 @@ public class InventoryManager extends PersistentState {
     }
 
     public void printUsedChannels(){
-        HashSet<String> channels = new HashSet<>();
+        UnorderedSet<String> channels = new UnorderedSet<>();
 
         System.out.println("Listing channels");
-        for(Chest chest : chests.values()){
+        for(Chest chest : chests.getValues()){
             if(!channels.contains(chest.channel)){
-                channels.add(chest.channel);
+                channels.put(chest.channel);
                 System.out.println("\t" + chest.channel);
             }
         }
@@ -110,7 +110,7 @@ public class InventoryManager extends PersistentState {
     }
 
     public void printChestsOnChannel(String channel){
-        HashSet<Chest> chests = getChestsOnChannel(channel);
+        UnorderedSet<Chest> chests = getChestsOnChannel(channel);
         System.out.println("Printing chests on channel: " + channel);
         for(Chest chest : chests){
             System.out.println("\t" + Chest.coordToString(chest.x, chest.y, chest.z));
@@ -118,15 +118,15 @@ public class InventoryManager extends PersistentState {
         System.out.println("Done printing chests on channel: " + channel);
     }
 
-    public HashSet<Chest> getChestsOnChannel(String channel){
-        return chestChannels.getOrDefault(channel, new HashSet<>());
+    public UnorderedSet<Chest> getChestsOnChannel(String channel){
+        return chestChannels.getOrDefault(channel, new UnorderedSet<>());
     }
 
     public void setChestChannel(Chest chest, String channel){
         //System.out.println(chest.channel + " | " + channel);
         chestChannels.get(chest.channel).remove(chest);
-        chestChannels.putIfAbsent(channel, new HashSet<>());
-        chestChannels.get(channel).add(chest);
+        chestChannels.putIfAbsent(channel, new UnorderedSet<>());
+        chestChannels.get(channel).put(chest);
         chest.channel = channel;
     }
 }

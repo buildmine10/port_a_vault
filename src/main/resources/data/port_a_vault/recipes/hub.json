@@ -3,20 +3,20 @@
   "pattern": [
     "IAI",
     "IOI",
-    "IBI"
+    "IXI"
   ],
   "key": {
     "O": {
       "item": "minecraft:lodestone"
     },
     "A": {
-      "item": "minecraft:nether_star"
+      "item": "minecraft:ender_eye"
     },
     "I": {
       "item": "minecraft:iron_block"
     },
-    "B": {
-      "item": "minecraft:redstone_block"
+    "X": {
+      "item": "minecraft:nether_star"
     }
   },
   "result": {
