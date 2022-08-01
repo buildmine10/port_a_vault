@@ -39,6 +39,7 @@ public class ChestGenerator extends Block {
                 for(var stack : chest.inventory){
                     stack.setData(new ItemStack(Item.byRawId((int)Math.floor(Math.random() * 100)), (int)(Math.random() * 64)));
                 }
+                //manager.setChestChannel(chest, "");
             }
         }
 
