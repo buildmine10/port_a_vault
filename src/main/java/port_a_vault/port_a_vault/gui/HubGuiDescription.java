@@ -58,12 +58,21 @@ public class HubGuiDescription extends SyncedGuiDescription {
 
         root.add(invenPanel, 0, 3+5);
 
+        //instructions label
+        WLabel inst = new WLabel(Text.literal("set channel to use"));
+        inst.setColor(0xadadad);
+
         WTextField searchBar = new WTextField();
 
         searchBar.setChangedListener(string->{
-
+            inst.setText(Text.literal(""));
             getEntity().setSearchQuery(string);
+            if(string.equals("") && getEntity().getChannel().equals("")) {
+                inst.setText(Text.literal("set channel to use"));
+            }
         });
+
+
 
 
 
@@ -145,8 +154,17 @@ public class HubGuiDescription extends SyncedGuiDescription {
             //System.out.println(channel);
             getEntity().setChannel(channel);
             getEntity().updateDisplayList();
+            if(!channel.equals("")){
+                inst.setText(Text.literal(""));
+            }
         });
 
+
+        //setBar.setChangedListener(string->{
+        //    if(string.equals("") && !getEntity().getChannel().equals("")){
+        //        setBar.setText(getEntity().getChannel());
+        //    }
+        //});
 
         //System.out.println("hi");
 
@@ -166,6 +184,7 @@ public class HubGuiDescription extends SyncedGuiDescription {
         root.add(this.createPlayerInventoryPanel(), 0, 39);
 
         root.add(searchBar, 0, 0, 41, 10);
+        root.add(inst, 1, 2, 1, 1);
         root.add(setButton, 42, 0, 7, 29);
         root.add(setBar, 50, 0, 13, 10);
         root.add(scrollBar, 57, 8, 5, 30);
@@ -186,4 +205,5 @@ public class HubGuiDescription extends SyncedGuiDescription {
         super.close(player);
         getEntity().putAway();
     }
+
 }

@@ -65,7 +65,8 @@ public class Port_a_vault implements ModInitializer {
 
     public static final Item SET_ITEM = new Item(new FabricItemSettings().group(ItemGroup.MISC));
 
-
+    public static final Block GENERATOR_BLOCK = new ChestGenerator(FabricBlockSettings.of(Material.METAL));
+    public static final Item GENERATOR_ITEM = new BlockItem(GENERATOR_BLOCK, new FabricItemSettings().group(ItemGroup.MISC));
 
     //public static NetworkGlobals network;
     public static InventoryManager inventoryManager;
@@ -96,5 +97,8 @@ public class Port_a_vault implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier("port_a_vault", "n"), N_ITEM);
 
         Registry.register(Registry.ITEM, new Identifier("port_a_vault", "set"), SET_ITEM);
+
+        Registry.register(Registry.BLOCK, new Identifier("port_a_vault", "generator"), GENERATOR_BLOCK);
+        Registry.register(Registry.ITEM, new Identifier("port_a_vault", "generator"), GENERATOR_ITEM);
     }
 }
