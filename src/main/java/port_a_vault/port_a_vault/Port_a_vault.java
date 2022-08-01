@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.gui.screen.ingame.Generic3x3ContainerScreen;
@@ -48,7 +49,7 @@ public class Port_a_vault implements ModInitializer {
 
 
 
-    public static final Block HUB_BLOCK = new Hub(FabricBlockSettings.of(Material.METAL).strength(4).resistance(1200.0f).requiresTool());
+    public static final Block HUB_BLOCK = new Hub(FabricBlockSettings.of(Material.METAL, MapColor.TEAL).strength(4).resistance(1200.0f).luminance((state) -> {return 15;}).requiresTool());
     public static final Item HUB_ITEM = new BlockItem(HUB_BLOCK, new FabricItemSettings().group(ItemGroup.MISC));
     public static final BlockEntityType<HubBlockEntity> HUB_BLOCK_ENTITY = FabricBlockEntityTypeBuilder.create(HubBlockEntity::new, HUB_BLOCK).build(null);
     public static final ScreenHandlerType<HubGuiDescription> HUB_SCREEN_HANDLER_TYPE = Registry.register(Registry.SCREEN_HANDLER, new Identifier("port_a_vault", "hub"), new ScreenHandlerType<>((syncId, inventory) -> new HubGuiDescription(syncId, inventory, ScreenHandlerContext.EMPTY)));

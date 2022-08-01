@@ -24,9 +24,9 @@ public class ChestGenerator extends Block {
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (!world.isClient) {
             InventoryManager manager = Port_a_vault.inventoryManager;
-            for(int x = 0; x < 20; x++){
-                for(int y = 0; y < 20; y++){
-                    for(int z = 0; z < 20; z++){
+            for(int x = 0; x < 16; x++){
+                for(int y = 0; y < 16; y++){
+                    for(int z = 0; z < 16; z++){
                         world.setBlockState(pos.add(x, y, z), Port_a_vault.CUSTOM_CHEST_BLOCK.getDefaultState());
                         manager.addChest(pos.add(x, y, z).toShortString());
                         manager.setChestChannel(manager.getChest(pos.add(x, y, z).toShortString()), pos.toShortString());
