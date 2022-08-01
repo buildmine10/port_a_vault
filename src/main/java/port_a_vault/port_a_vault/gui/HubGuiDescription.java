@@ -205,4 +205,5 @@ public class HubGuiDescription extends SyncedGuiDescription {
         super.close(player);
         getEntity().putAway();
     }
+
 }
