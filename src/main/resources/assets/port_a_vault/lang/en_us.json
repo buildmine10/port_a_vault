@@ -1,5 +1,6 @@
 {
-  "block.port_a_vault.custom_chest" : "Custom Chest",
+  "block.port_a_vault.custom_chest" : "Vault Hub",
+  "block.port_a_vault.hub" : "Vault Block",
   "block.port_a_vault.test" : "Extract",
   "block.port_a_vault.test2" : "Insert"
 }
