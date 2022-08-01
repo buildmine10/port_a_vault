@@ -1,6 +1,7 @@
 {
-  "block.port_a_vault.custom_chest" : "Vault Hub",
-  "block.port_a_vault.hub" : "Vault Block",
+  "block.port_a_vault.custom_chest" : "Vault Crate",
+  "block.port_a_vault.hub" : "Vault Hub",
+  "block.port_a_vault.generator" : "Cheater Block",
   "block.port_a_vault.test" : "Extract",
   "block.port_a_vault.test2" : "Insert"
 }

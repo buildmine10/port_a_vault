@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "port_a_vault:block/generator"
+    }
+  }
+}
