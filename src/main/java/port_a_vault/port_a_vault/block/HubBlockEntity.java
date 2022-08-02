@@ -26,6 +26,7 @@ import port_a_vault.port_a_vault.gui.HubGuiDescription;
 import port_a_vault.port_a_vault.util.AccessPointBackend;
 import port_a_vault.port_a_vault.util.BigStack;
 import port_a_vault.port_a_vault.util.Chest;
+import port_a_vault.port_a_vault.util.Timer;
 
 import java.util.*;
 
@@ -34,10 +35,14 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
     String channel = "";
     String searchQuery = "";
     int scrollAmount = 0;
+
+    Timer timer = new Timer();
     public boolean isUsingAlphabetical = false;
     public boolean isAccengingSort = false;
     DefaultedList<ItemStack> displayStacks = DefaultedList.ofSize(9 * 5, ItemStack.EMPTY);
     public AccessPointBackend backend = new AccessPointBackend();
+
+
 
     ArrayList<BigStack> items = new ArrayList<>();
 
@@ -103,7 +108,10 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
     public ItemStack removeStack(int slot, int amount) {
         this.checkLootInteraction(null);
         //ItemStack out = backend.removeCount(items.get(slot + scrollAmount * 9), amount);
+        timer.start();
         updateDisplayList();
+        System.out.println("Removing " + amount + " items from " + treeName() + " took " + timer.stop() + " milliseconds");
+        timer.reset();
         //Port_a_vault.inventoryManager.markDirty();
         //return out;
         //return displayStacks.get(slot);//new ItemStack(Items.AIR);//
@@ -121,7 +129,10 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
         //System.out.println("hi");
         this.checkLootInteraction(null);
         //ItemStack out = backend.removeStack(items.get(slot + scrollAmount * 9));
+        timer.start();
         updateDisplayList();
+        System.out.println("Removing stack from " + treeName() + " took " + timer.stop() + " milliseconds");
+        timer.reset();
         //Port_a_vault.inventoryManager.markDirty();
         //return out;
         //return displayStacks.get(slot);//new ItemStack(Items.AIR);//
@@ -141,7 +152,10 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
 
         this.markDirty();
         Port_a_vault.inventoryManager.markDirty();
+        timer.start();
         updateDisplayList();
+        System.out.println("Inserting stack into " + treeName() + " took " + timer.stop() + " milliseconds");
+        timer.reset();
     }
 
     @Override
@@ -347,4 +361,6 @@ public class HubBlockEntity extends LootableContainerBlockEntity implements Name
         isAccengingSort = tag.getBoolean("isAscending");
         backend.setChannel(channel);
     }
+
+    private String treeName() { return backend.isUsingRedBlackTree() ? "Red-Black Tree" : "B+ Tree"; }
 }
