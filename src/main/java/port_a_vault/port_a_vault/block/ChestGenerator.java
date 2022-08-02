@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import port_a_vault.port_a_vault.Port_a_vault;
 import port_a_vault.port_a_vault.util.Chest;
 import port_a_vault.port_a_vault.util.InventoryManager;
+import port_a_vault.port_a_vault.util.Timer;
 
 public class ChestGenerator extends Block {
     public ChestGenerator(Settings settings) {
